@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -62,6 +63,32 @@ class User implements UserInterface
      * @ORM\Column(type="json")
      */
     private $roles = [];
+
+
+    //RELATION ENTRE USER/CAMPUS
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Campus", inversedBy="users")
+     */
+    private $campus;
+
+    //RELATION ENTRE USER/OUTING
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Outing", mappedBy="o_users")
+     */
+    private $outings;
+
+    //RELATION ENTRE USER/OUTING
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Outing", mappedBy="registered_user")
+     */
+    private $registered_outing;
+
+    public function __construct()
+    {
+        $this->outings = new ArrayCollection();
+        $this->registered_outing = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -204,4 +231,58 @@ class User implements UserInterface
     {
         // TODO: Implement eraseCredentials() method.
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCampus()
+    {
+        return $this->campus;
+    }
+
+    /**
+     * @param mixed $campus
+     */
+    public function setCampus($campus): void
+    {
+        $this->campus = $campus;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getOutings(): ArrayCollection
+    {
+        return $this->outings;
+    }
+
+    /**
+     * @param ArrayCollection $outings
+     */
+    public function setOutings(ArrayCollection $outings): void
+    {
+        $this->outings = $outings;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRegisteredOuting()
+    {
+        return $this->registered_outing;
+    }
+
+    /**
+     * @param mixed $registered_outing
+     */
+    public function setRegisteredOuting($registered_outing): void
+    {
+        $this->registered_outing = $registered_outing;
+    }
+
+    /**
+     * @return mixed
+     */
+
+
 }

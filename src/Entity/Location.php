@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\LocationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,6 +37,25 @@ class Location
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
     private $longitude;
+
+
+    //RELATION LOCATION/OUTING
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Outing", mappedBy="Locations"
+     */
+    private $outing;
+    //RELATION LOCATION/CITY
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\City", inversedBy="location"
+     */
+    private $city;
+
+    public function __construct()
+    {
+        $this->outing = new ArrayCollection();
+    }
+
+
 
     public function getId(): ?int
     {
@@ -89,4 +109,37 @@ class Location
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getOuting()
+    {
+        return $this->outing;
+    }
+
+    /**
+     * @param mixed $outing
+     */
+    public function setOuting($outing): void
+    {
+        $this->outing = $outing;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param mixed $city
+     */
+    public function setCity($city): void
+    {
+        $this->city = $city;
+    }
+
 }

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\StateRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,6 +28,19 @@ class State
         return $this->id;
     }
 
+    //RELATION STATE/OUTING
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Outing", mappedBy="states")
+     */
+    private $outing;
+
+    public function __construct()
+    {
+        $this->outing = new ArrayCollection();
+    }
+
+
+
     public function getName(): ?string
     {
         return $this->name;
@@ -38,4 +52,21 @@ class State
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getOuting()
+    {
+        return $this->outing;
+    }
+
+    /**
+     * @param mixed $outing
+     */
+    public function setOuting($outing): void
+    {
+        $this->outing = $outing;
+    }
+
 }

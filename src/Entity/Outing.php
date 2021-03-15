@@ -52,6 +52,35 @@ class Outing
      */
     private $state;
 
+
+    //RELATION OUTING/CAMPUS
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Campus", inversedBy="outings")
+     */
+    private $campus;
+    //RELATION OUTING/USER
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="outings")
+     */
+    private $o_users;
+    //RELATION OUTING/USER
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="registered_outing")
+     */
+    private $registered_user;
+    //RELATION OUTING/STATE
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\State", inversedBy="outing")
+     */
+    private $states;
+    //RELATION OUTING/LOCATION
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Location", inversedBy="outing"
+     */
+    private $locations;
+
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -140,4 +169,90 @@ class Outing
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCampus()
+    {
+        return $this->campus;
+    }
+
+    /**
+     * @param mixed $campus
+     */
+    public function setCampus($campus): void
+    {
+        $this->campus = $campus;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOUsers()
+    {
+        return $this->o_users;
+    }
+
+    /**
+     * @param mixed $o_users
+     */
+    public function setOUsers($o_users): void
+    {
+        $this->o_users = $o_users;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRegisteredUser()
+    {
+        return $this->registered_user;
+    }
+
+    /**
+     * @param mixed $registered_user
+     */
+    public function setRegisteredUser($registered_user): void
+    {
+        $this->registered_user = $registered_user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStates()
+    {
+        return $this->states;
+    }
+
+    /**
+     * @param mixed $states
+     */
+    public function setStates($states): void
+    {
+        $this->states = $states;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLocations()
+    {
+        return $this->locations;
+    }
+
+    /**
+     * @param mixed $locations
+     */
+    public function setLocations($locations): void
+    {
+        $this->locations = $locations;
+    }
+
+    /**
+     * @return mixed
+     */
+
+
 }

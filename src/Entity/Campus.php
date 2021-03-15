@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CampusRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,6 +23,26 @@ class Campus
      */
     private $name;
 
+
+    //RELATION CAMPUS/USER
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="campus")
+     */
+    private $users;
+
+    //RELATION CAMPUS/OUTING
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Outing", mappedBy="campus")
+     */
+    private $outings;
+
+    public function __construct()
+    {
+        $this->users =new ArrayCollection();
+        $this->outings = new ArrayCollection();
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -38,4 +59,37 @@ class Campus
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * @param mixed $users
+     */
+    public function setUser($users): void
+    {
+        $this->users = $users;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getOutings(): ArrayCollection
+    {
+        return $this->outings;
+    }
+
+    /**
+     * @param ArrayCollection $outings
+     */
+    public function setOutings(ArrayCollection $outings): void
+    {
+        $this->outings = $outings;
+    }
+
 }
