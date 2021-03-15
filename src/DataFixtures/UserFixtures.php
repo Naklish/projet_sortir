@@ -31,7 +31,7 @@ class UserFixtures extends Fixture
             $user->setFirstname($faker->firstName);
             $user->setUsername($faker->unique()->userName);
             $user->setMail($faker->unique()->email);
-            $user->setPhone($faker->phoneNumber);
+            $user->setPhone($faker->e164PhoneNumber);
 
             $password = $this->encoder->encodePassword($user, "123456");
             $user->setPassword($password);
