@@ -75,7 +75,7 @@ class Outing
     private $states;
     //RELATION OUTING/LOCATION
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Location", inversedBy="outing"
+     * @ORM\ManyToOne(targetEntity="App\Entity\Location", inversedBy="outing")
      */
     private $locations;
 
