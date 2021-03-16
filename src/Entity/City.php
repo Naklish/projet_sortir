@@ -28,7 +28,7 @@ class City
      */
     private $zipCode;
 
-    //RELATION CITY/LOCATION
+    //RELATION CITY / LOCATION
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Location", mappedBy="city")
      */

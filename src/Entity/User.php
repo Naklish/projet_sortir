@@ -280,9 +280,5 @@ class User implements UserInterface
         $this->registered_outing = $registered_outing;
     }
 
-    /**
-     * @return mixed
-     */
-
 
 }
