@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+    </head>
+    <body>
+        <div>
+            <nav>
+                <a href="{{ path('home') }}">Accueil</a>
+
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <a href="{{ path('user_myprofile') }}">Mon profil</a>
+                    <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                {% else %}
+                    <a href="{{ path('app_login') }}">Se connecter</a>
+                {% endif %}
+            </nav>
+        </div>
+        {% block main %}
+        {% endblock %}
+    </body>
+</html>
