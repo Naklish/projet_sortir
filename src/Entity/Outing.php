@@ -48,7 +48,8 @@ class Outing
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\State", inversedBy="outing")
      */
     private $state;
 
@@ -68,11 +69,7 @@ class Outing
      * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="registered_outing")
      */
     private $registered_user;
-    //RELATION OUTING/STATE
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\State", inversedBy="outing")
-     */
-    private $states;
+
     //RELATION OUTING/LOCATION
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Location", inversedBy="outing")

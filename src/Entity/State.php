@@ -30,7 +30,7 @@ class State
 
     //RELATION STATE/OUTING
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Outing", mappedBy="states")
+     * @ORM\OneToMany(targetEntity="App\Entity\Outing", mappedBy="state")
      */
     private $outing;
 
