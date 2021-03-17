@@ -218,22 +218,6 @@ class Outing
     /**
      * @return mixed
      */
-    public function getStates()
-    {
-        return $this->states;
-    }
-
-    /**
-     * @param mixed $states
-     */
-    public function setStates($states): void
-    {
-        $this->states = $states;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getLocations()
     {
         return $this->locations;
@@ -246,10 +230,5 @@ class Outing
     {
         $this->locations = $locations;
     }
-
-    /**
-     * @return mixed
-     */
-
 
 }

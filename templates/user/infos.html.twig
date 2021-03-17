@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Profil de {{ user.username }}
+{% endblock %}
+
+
+
+{% block main %}
+
+    {#  Pseudo (centré) de l'utilisateur #}
+    <div class="pseudo">
+        <h1> {{ user.username }}</h1>
+    </div>
+
+    {#  Photo de profil de l'utilisateur #}
+    <div class="picture">
+        <img src="https://cdn.icon-icons.com/icons2/827/PNG/512/user_icon-icons.com_66546.png" style="width:100px"/>
+    </div>
+
+    {#  Informations de l'utilisateur #}
+    <div class="infos">
+
+        <div class="firstname">
+            <p>Prénom : {{ user.firstname }}</p>
+        </div>
+
+        <div class="name">
+            <p>Nom : {{ user.name }}</p>
+        </div>
+
+        <div class="phone">
+            <p>Téléphone : {{ user.phone }}</p>
+        </div>
+
+        <div class="mail">
+            <p>Email : {{ user.mail }}</p>
+        </div>
+
+        <div class="campus">
+            <p>Campus : {{ user.campus.name }}</p>
+        </div>
+
+    </div>
+
+
+
+    {#  Bouton de retour à la page d'acceuil #}
+    <div class="btn_home">
+    <button><a href="{{ path('home') }}"> Retour</a></button>
+    </div>
+
+
+
+
+
+{% endblock %}

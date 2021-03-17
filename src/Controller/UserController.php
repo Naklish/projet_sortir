@@ -48,19 +48,35 @@ class UserController extends AbstractController
         $password = $userForm->get("password")->getData();
         $confirmation = $request->request->get("confirmation");
 
-        if($userForm->isValid() && $userForm->isSubmitted()){
-                $hashed = $encoder->encodePassword($user, $password);
-                $user->setPassword($hashed);
-                $em->persist($user);
-                $em->flush();
+        if ($userForm->isValid() && $userForm->isSubmitted()) {
+            $hashed = $encoder->encodePassword($user, $password);
+            $user->setPassword($hashed);
+            $em->persist($user);
+            $em->flush();
 
-                $this->addFlash('notice', 'Profil mis à jour');
-                return $this->redirectToRoute('user_myprofile');
+            $this->addFlash('notice', 'Profil mis à jour');
+            return $this->redirectToRoute('user_myprofile');
         }
 
 
         return $this->render('user/myprofile.html.twig', [
             'userForm' => $userForm->createView(),
         ]);
+    }
+
+    //FONCTION qui retourne les données utilisateur
+    /**
+     * @Route ("/{id}", name="user_infos",
+     *     requirements={"id": "\d+"}, methods={"GET"})
+     */
+        public function infos($id, Request $request)
+        {
+
+            $userRepo = $this->getDoctrine()->getRepository(User::class);
+            $user = $userRepo->find($id);
+
+            return $this->render('user/infos.html.twig', ["user" => $user]);
+
+
     }
 }

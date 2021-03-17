@@ -41,7 +41,7 @@ class Location
 
     //RELATION LOCATION/OUTING
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Outing", mappedBy="locations")
+     * @ORM\OneToMany(targetEntity="App\Entity\Outing", mappedBy="location")
      */
     private $outing;
     //RELATION LOCATION/CITY
@@ -111,17 +111,17 @@ class Location
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
-    public function getOuting()
+    public function getOuting(): ArrayCollection
     {
         return $this->outing;
     }
 
     /**
-     * @param mixed $outing
+     * @param ArrayCollection $outing
      */
-    public function setOuting($outing): void
+    public function setOuting(ArrayCollection $outing): void
     {
         $this->outing = $outing;
     }
@@ -141,5 +141,10 @@ class Location
     {
         $this->city = $city;
     }
+
+
+
+
+
 
 }
