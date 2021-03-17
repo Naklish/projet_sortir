@@ -1,36 +1,57 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/login.css') }}">
+    <title>Connexion</title>
+</head>
+<body>
+            <h1 class="h3 mb-3 font-weight-normal">Logo Sortir.com</h1>
+    <main>
+        <form class="form-login" method="post">
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
 
-{% block title %}Log in!{% endblock %}
+            {% if app.user %}
+                <div class="mb-3">
+                    You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+                </div>
+            {% endif %}
 
-{% block main %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+            <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" for="inputUsername">Pseudo :</label>
+                <div class="col-sm-8">
+                    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" required autofocus>
+                </div>
+            </div>
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
-    {% endif %}
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" for="inputPassword">Mot de passe :</label>
+                <div class="col-sm-8">
+                    <input type="password" name="password" id="inputPassword" class="form-control" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <button id="btn-connexion" class="btn btn-lg btn-primary" type="submit">
+                        Connexion
+                    </button>
+                </div>
+                    <div class="col-sm-8">
+                        <div class="checkbox mb-3">
+                            <label>
+                                <input type="checkbox" name="_remember_me" checked> Se souvenir de moi
+                            </label>
+                            <p><a href="#">Mot de passe oublié</a></p>
+                        </div>
+                    </div>
+            </div>
+            <input type="hidden" name="_csrf_token"
+                   value="{{ csrf_token('authenticate') }}">
+        </form>
+    </main>
+</body>
+</html>
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputUsername">Username</label>
-    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" required>
-
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me" checked> Se souvenir de moi
-            </label>
-        </div>
-
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form>
-{% endblock %}

@@ -1,0 +1,20 @@
+.form-profile
+{
+    margin-left: 30%;
+    margin-right: 30%;
+}
+
+h3
+{
+    text-align: center;
+}
+
+.form-group
+{
+    height: 60px;
+}
+
+.btn
+{
+    box-shadow: 5px 5px 5px #5eb5e0;
+}

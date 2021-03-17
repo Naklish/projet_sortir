@@ -1,11 +1,16 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheet %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/myprofile.css') }}">
+{% endblock %}
 {% block title %}
-
+{{ parent() }} | Mon profil
 {% endblock %}
 
 {% block main %}
-    <h1>Mon profil</h1>
+    <br>
+    <h3>Mon profil</h3>
 
     {% for message in app.flashes('notice') %}
         <div class="flash-notice">
@@ -13,9 +18,23 @@
         </div>
     {% endfor %}
 
-    {{ form_start(userForm)}}
-    {{ form_widget(userForm) }}
-        <button type="submit">Modifier</button>
-    {{ form_end(userForm) }}
+    <div class="form-profile">
+        {{ form_start(userForm)}}
+
+        {{ form_row(userForm.username, { label_attr: { class: ''}}) }}
+        {{ form_row(userForm.firstname) }}
+        {{ form_row(userForm.name) }}
+        {{ form_row(userForm.phone) }}
+        {{ form_row(userForm.mail) }}
+        {{ form_row(userForm.password) }}
+        {{ form_row(userForm.campus) }}
+        <br>
+        <label for="uploader">Ma photo :</label>
+        <button class="btn" type="button" id="uploader">Télécharger ma photo vers le serveur</button>
+        <br><br>
+            <button class="btn btn-lg" type="submit">Enregistrer</button>
+            <button class="btn btn-lg" type="button">Annuler</button>
+        {{ form_end(userForm) }}
+    </div>
 {% endblock %}
 
