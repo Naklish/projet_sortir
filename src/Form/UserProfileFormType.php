@@ -2,11 +2,15 @@
 
 namespace App\Form;
 
+use App\Entity\Campus;
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,9 +35,17 @@ class UserProfileFormType extends AbstractType
             ->add('mail', EmailType::class, [
                 'label' => 'E-mail'
             ])
-            ->add('campus')
-            ->add('password', PasswordType::class, [
-                'label' => 'Mot de passe :'
+            ->add('campus', EntityType::class, [
+                'class' => Campus::class,
+                'choice_label' => 'name'
+            ])
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'invalid_message' => 'Les champs des mots de passe doivent correspondre',
+                'options' => ['attr' => ['class' => 'password-field']],
+                'required' => true,
+                'first_options'  => ['label' => 'Mot de passe :'],
+                'second_options' => ['label' => 'Confirmation :']
             ])
         ;
     }

@@ -24,6 +24,7 @@ class UserController extends AbstractController
      */
     public function myProfile(): \Symfony\Component\HttpFoundation\Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $user = $this->getUser();
         $form = $this->createForm(UserProfileFormType::class, $user);
 
@@ -37,6 +38,7 @@ class UserController extends AbstractController
      */
     public function modify(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $userRepo = $this->getDoctrine()->getRepository(User::class);
         $user = $userRepo->find($this->getUser());
 
@@ -46,8 +48,7 @@ class UserController extends AbstractController
         $password = $userForm->get("password")->getData();
         $confirmation = $request->request->get("confirmation");
 
-        if($userForm->isValid() && $userForm->isSubmitted())
-            if ($password === $confirmation){
+        if($userForm->isValid() && $userForm->isSubmitted()){
                 $hashed = $encoder->encodePassword($user, $password);
                 $user->setPassword($hashed);
                 $em->persist($user);
@@ -55,10 +56,8 @@ class UserController extends AbstractController
 
                 $this->addFlash('notice', 'Profil mis à jour');
                 return $this->redirectToRoute('user_myprofile');
-            } else {
-                $this->addFlash('notice', 'Erreur : confirmation du mot de passe');
-                return $this->redirectToRoute('user_myprofile');
-            }
+        }
+
 
         return $this->render('user/myprofile.html.twig', [
             'userForm' => $userForm->createView(),
