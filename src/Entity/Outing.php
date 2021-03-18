@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\OutingRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -64,6 +65,7 @@ class Outing
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="outings")
      */
     private $o_users;
+
     //RELATION OUTING/USER
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="registered_outing")
@@ -75,6 +77,11 @@ class Outing
      * @ORM\ManyToOne(targetEntity="App\Entity\Location", inversedBy="outing")
      */
     private $locations;
+
+    public function __construct()
+    {
+        $this->registered_user = new ArrayCollection();
+    }
 
 
 
@@ -119,7 +126,7 @@ class Outing
         return $this;
     }
 
-    public function getDeadlineRegistration(): ?string
+    public function getDeadlineRegistration(): \DateTime
     {
         return $this->deadlineRegistration;
     }
@@ -155,7 +162,7 @@ class Outing
         return $this;
     }
 
-    public function getState(): ?string
+    public function getState()
     {
         return $this->state;
     }

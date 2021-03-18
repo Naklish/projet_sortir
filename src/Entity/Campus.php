@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CampusRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -42,7 +43,6 @@ class Campus
         $this->outings = new ArrayCollection();
     }
 
-
     public function getId(): ?int
     {
         return $this->id;
@@ -77,9 +77,9 @@ class Campus
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getOutings(): ArrayCollection
+    public function getOutings(): Collection
     {
         return $this->outings;
     }

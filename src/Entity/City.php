@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -39,8 +40,6 @@ class City
         $this->location = new ArrayCollection();
     }
 
-
-
     public function getId(): ?int
     {
         return $this->id;
@@ -71,9 +70,9 @@ class City
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getLocation(): ArrayCollection
+    public function getLocation(): Collection
     {
         return $this->location;
     }

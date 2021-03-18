@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\LocationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -111,9 +112,9 @@ class Location
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getOuting(): ArrayCollection
+    public function getOuting(): Collection
     {
         return $this->outing;
     }
