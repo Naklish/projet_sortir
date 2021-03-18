@@ -83,6 +83,12 @@ class User implements UserInterface
      */
     private $registered_outing;
 
+    //RELATION ENTRE USER/IMAGE
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Image", inversedBy="user")
+     */
+    private $image;
+
     public function __construct()
     {
         $this->outings = new ArrayCollection();
@@ -279,6 +285,23 @@ class User implements UserInterface
     {
         $this->registered_outing = $registered_outing;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image): void
+    {
+        $this->image = $image;
+    }
+
 
 
 }
