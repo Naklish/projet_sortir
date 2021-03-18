@@ -41,7 +41,7 @@ class Location
 
     //RELATION LOCATION/OUTING
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Outing", mappedBy="location")
+     * @ORM\OneToMany(targetEntity="App\Entity\Outing", mappedBy="locations")
      */
     private $outing;
     //RELATION LOCATION/CITY

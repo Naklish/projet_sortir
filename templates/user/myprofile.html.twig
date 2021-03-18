@@ -9,32 +9,59 @@
 {% endblock %}
 
 {% block main %}
-    <br>
     <h3>Mon profil</h3>
 
-    {% for message in app.flashes('notice') %}
-        <div class="flash-notice">
-            {{ message }}
+    <div class="row justify-content-center">
+        <div class="col-sm-2">
+            <br><br><br>
+            <div class="row">
+                <img id="img-profile" src="{{ asset('uploads/images/' ~ user.image.imageFilename) }}">
+                <br>
+            </div>
+            <br>
+            <div class="row">
+                {% for message in app.flashes('notice') %}
+                    <div class="alert alert-info">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
         </div>
-    {% endfor %}
+        <div class="col-sm-6    ">
+            <div class="form-profile">
+                {{ form_start(userForm)}}
 
-    <div class="form-profile">
-        {{ form_start(userForm)}}
-
-        {{ form_row(userForm.username, { label_attr: { class: ''}}) }}
-        {{ form_row(userForm.firstname) }}
-        {{ form_row(userForm.name) }}
-        {{ form_row(userForm.phone) }}
-        {{ form_row(userForm.mail) }}
-        {{ form_row(userForm.password) }}
-        {{ form_row(userForm.campus) }}
-        <br>
-        <label for="uploader">Ma photo :</label>
-        <button class="btn" type="button" id="uploader">Télécharger ma photo vers le serveur</button>
-        <br><br>
-            <button class="btn btn-lg" type="submit">Enregistrer</button>
-            <button class="btn btn-lg" type="button">Annuler</button>
-        {{ form_end(userForm) }}
+                {{ form_row(userForm.username, { label_attr: { class: ''}}) }}
+                {{ form_row(userForm.firstname) }}
+                {{ form_row(userForm.name) }}
+                {{ form_row(userForm.phone) }}
+                {{ form_row(userForm.mail) }}
+                {{ form_row(userForm.campus) }}
+                {{ form_row((userForm.photo)) }}
+                {{ form_row(userForm.password) }}
+                {# <br>
+                <label for="uploader">Ma photo :</label>
+                <button class="btn" type="button" id="uploader">Télécharger ma photo vers le serveur</button>
+                <br><br>
+                #}
+                    <button class="btn btn-lg" type="submit">Enregistrer</button>
+                    <a class="btn btn-lg" href="{{ path('home') }}">Annuler</a>
+                {{ form_end(userForm) }}
+            </div>
+        </div>
     </div>
+    <script>
+        const labelFile = document.getElementById('label-input-file');
+        const inputFile = document.getElementById('user_profile_form_photo');
+        inputFile.addEventListener('change',  (event) => {
+            const fileList = event.target.files;
+            labelFile.innerHTML = "Photo : " + fileList[0].name;
+        });
+        let imageFilename = "{{ user.image.imageFilename }}";
+        console.log(imageFilename);
+
+        document.getElementById('img-profile').src = src;
+        console.log(src);
+    </script>
 {% endblock %}
 

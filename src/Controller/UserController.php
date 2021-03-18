@@ -4,11 +4,13 @@
 namespace App\Controller;
 
 
+use App\Entity\Image;
 use App\Entity\User;
 use App\Form\UserProfileFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Forms;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -25,18 +27,24 @@ class UserController extends AbstractController
     public function myProfile(): \Symfony\Component\HttpFoundation\Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+        $userRepo = $this->getDoctrine()->getRepository(User::class);
+
         $user = $this->getUser();
         $form = $this->createForm(UserProfileFormType::class, $user);
 
+        $user = $userRepo->find($this->getUser());
+
         return $this->render('user/myprofile.html.twig', [
             'userForm' => $form->createView(),
+            'user' => $user,
         ]);
     }
 
     /**
      * @Route("/myprofile", name="user_myprofile_modify", methods={"POST"})
      */
-    public function modify(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder)
+    public function modify(Request $request, EntityManagerInterface $em,
+                           UserPasswordEncoderInterface $encoder)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $userRepo = $this->getDoctrine()->getRepository(User::class);
@@ -46,9 +54,25 @@ class UserController extends AbstractController
         $userForm->handleRequest($request);
 
         $password = $userForm->get("password")->getData();
-        $confirmation = $request->request->get("confirmation");
+
 
         if ($userForm->isValid() && $userForm->isSubmitted()) {
+
+            $image = new Image();
+            $imageFile = $userForm->get('photo')->getData();
+
+            if($imageFile){
+               $originalFilename = pathinfo($imageFile->getClientOriginalName(). '.' . $imageFile->guessExtension(), PATHINFO_FILENAME);
+
+               $imageFile->move(
+                   $this->getParameter('image_directory'),
+                   $originalFilename
+               );
+               $image->setImageFileName($originalFilename);
+               $user->setImage($image);
+               $em->persist($image);
+            }
+
             $hashed = $encoder->encodePassword($user, $password);
             $user->setPassword($hashed);
             $em->persist($user);
@@ -61,6 +85,7 @@ class UserController extends AbstractController
 
         return $this->render('user/myprofile.html.twig', [
             'userForm' => $userForm->createView(),
+            'user' => $user,
         ]);
     }
 
