@@ -15,7 +15,7 @@
         <div class="col-sm-2">
             <br><br><br>
             <div class="row">
-                <img id="img-profile" src="{{ asset('uploads/images/' ~ user.image.imageFilename) }}">
+                <img id="img-profile" src="">
                 <br>
             </div>
             <br>
@@ -25,9 +25,16 @@
                         {{ message }}
                     </div>
                 {% endfor %}
+                {% for message in app.flashes('error') %}
+                    <div class="alert alert-info">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
             </div>
         </div>
         <div class="col-sm-6    ">
+            <br><br>
             <div class="form-profile">
                 {{ form_start(userForm)}}
 
@@ -57,11 +64,9 @@
             const fileList = event.target.files;
             labelFile.innerHTML = "Photo : " + fileList[0].name;
         });
-        let imageFilename = "{{ user.image.imageFilename }}";
-        console.log(imageFilename);
-
+        src = "{{ asset('uploads/images/' ~ user.image.imageFilename|default('default_profile.png') ) }}"
         document.getElementById('img-profile').src = src;
-        console.log(src);
+
     </script>
 {% endblock %}
 

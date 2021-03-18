@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\City;
 use App\Entity\Location;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,7 +23,7 @@ class LocationRepository extends ServiceEntityRepository
     // /**
     //  * @return Location[] Returns an array of Location objects
     //  */
-    /*
+
     public function findByExampleField($value)
     {
         return $this->createQueryBuilder('l')
@@ -34,7 +35,16 @@ class LocationRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    */
+
+    public function findByCity(City $city)
+    {
+        return $this->createQueryBuilder('qb')
+            ->andWhere('qb.city = :val')
+            ->setParameter('val', $city->getId())
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 
     /*
     public function findOneBySomeField($value): ?Location

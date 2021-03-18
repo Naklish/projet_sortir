@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Campus;
+use App\Entity\City;
 use App\Entity\Location;
 use App\Entity\Outing;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -29,7 +30,7 @@ class OutingFormType extends AbstractType
             ->add('duration', IntegerType::class, [
                 'label' => 'Durée :'
             ])
-            ->add('deadlineRegistration', DateType::class, [
+            ->add('deadlineRegistration', DateTimeType::class, [
                 'label' => 'Date limite d\'inscription :'
             ])
             ->add('maxRegistration', TextType::class, [
@@ -43,9 +44,15 @@ class OutingFormType extends AbstractType
                 'choice_label' => 'name',
                 'label' => 'Campus :'
             ])
+            ->add('city', EntityType::class, [
+                'class' => City::class,
+                'mapped' => false,
+                'choice_label' => 'name',
+                'label' => 'Ville :'
+            ])
             ->add('locations', EntityType::class, [
                 'class' => Location::class,
-                'choice_label' => 'city.name',
+                'choice_label' => 'name',
                 'label' => 'Lieu :'
             ])
 

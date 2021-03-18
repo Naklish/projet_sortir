@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OutingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Types\DateType;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -129,12 +130,12 @@ class Outing
         return $this;
     }
 
-    public function getDeadlineRegistration(): \DateTime
+    public function getDeadlineRegistration(): ?\DateTimeInterface
     {
         return $this->deadlineRegistration;
     }
 
-    public function setDeadlineRegistration(string $deadlineRegistration): self
+    public function setDeadlineRegistration(\DateTime $deadlineRegistration): self
     {
         $this->deadlineRegistration = $deadlineRegistration;
 
@@ -170,7 +171,7 @@ class Outing
         return $this->state;
     }
 
-    public function setState(string $state): self
+    public function setState(State $state): self
     {
         $this->state = $state;
 

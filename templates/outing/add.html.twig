@@ -3,5 +3,39 @@
 {% block main %}
     <h1>Ajoutez une nouvelle sortie !</h1>
 
-    {{ form(outingForm) }}
+    {{ form_start(outingForm) }}
+    {{ form_widget(outingForm) }}
+        <button class="btn btn-lg" type="submit">Créer</button>
+        <button class="btn btn-lg">Publier</button>
+        <a class="btn btn-lg" href="{{ path('home') }}">Annuler</a>
+    {{ form_end(outingForm) }}
+
+
+    <script>
+        let idCity;
+        const selectCity = document.getElementById('outing_form_city');
+        window.onload = function () {
+            getCity(selectCity.value);
+        };
+
+        selectCity.addEventListener('change', function () {
+            idCity = selectCity.value;
+            console.log(idCity);
+            getCity(idCity);
+        });
+
+        function getCity(id) {
+            fetch("http://localhost/projet_sortir/public/api/location/city/" + id , { method: "GET" })
+                .then(response => response.json())
+                .then(response => {
+                    const $selectLocation = document.querySelector('#outing_form_locations');
+                    let options = "";
+                    response.map(location => {
+                        options += `<option value="${location.id}">${location.name}</option>`
+                    })
+                    // on injecte les options dans la balise <select>
+                    $selectLocation.innerHTML = options;
+                })
+        };
+    </script>
 {% endblock %}

@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Image;
 use App\Entity\User;
 use App\Form\UserProfileFormType;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Forms;
@@ -42,6 +43,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/myprofile", name="user_myprofile_modify", methods={"POST"})
+     * @throws UniqueConstraintViolationException
      */
     public function modify(Request $request, EntityManagerInterface $em,
                            UserPasswordEncoderInterface $encoder)
@@ -76,10 +78,22 @@ class UserController extends AbstractController
             $hashed = $encoder->encodePassword($user, $password);
             $user->setPassword($hashed);
             $em->persist($user);
-            $em->flush();
+            try {
+                $em->flush();
 
-            $this->addFlash('notice', 'Profil mis à jour');
-            return $this->redirectToRoute('user_myprofile');
+                $this->addFlash('notice', 'Profil mis à jour');
+
+            } catch (UniqueConstraintViolationException $e){
+                $this->addFlash('error', 'Le pseudo ou l\'e-mail sont déjà utilisés.');
+
+            } finally {
+
+                return $this->render('user/myprofile.html.twig', [
+                    'user' => $user,
+                    'userForm' => $userForm->createView()
+                ]);
+            }
+
         }
 
 
