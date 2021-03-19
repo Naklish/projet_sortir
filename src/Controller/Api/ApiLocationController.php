@@ -30,14 +30,12 @@ class ApiLocationController extends AbstractController
     public function listOfLocation(LocationRepository $locationRepo, CityRepository $cityRepo, SerializerInterface $serializer,
                                    $idCity)
     {
-        $city = $cityRepo->find($idCity);
-        $locations = $locationRepo->findByCity($city);
+        $idCity = (int)$idCity;
+        $locations = $locationRepo->findByCity($idCity);
 
         // Sérialiser la collection d'objets Outings
         $json = $serializer->serialize($locations, 'json', [
-            'circular_reference_handler' => function ($object) {
-                return $object->getId();
-            }
+            'groups' => 'location'
         ]);
         // On retourne la réponse au format JSON
 

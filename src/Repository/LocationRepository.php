@@ -6,6 +6,7 @@ use App\Entity\City;
 use App\Entity\Location;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @method Location|null find($id, $lockMode = null, $lockVersion = null)
@@ -36,11 +37,13 @@ class LocationRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findByCity(City $city)
+    public function findByCity(int $idCity)
     {
         return $this->createQueryBuilder('qb')
-            ->andWhere('qb.city = :val')
-            ->setParameter('val', $city->getId())
+            ->join('qb.city', 'ct')
+            ->join('ct.location', 'loc')
+            ->andWhere('ct.id = :val')
+            ->setParameter('val', $idCity)
             ->getQuery()
             ->getResult()
             ;
