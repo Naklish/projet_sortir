@@ -53,7 +53,6 @@ class OutingController extends AbstractController
     public function createOuting(Request $request, EntityManagerInterface $em)
     {
         $stateRepo = $this->getDoctrine()->getRepository(State::class);
-        $state = $stateRepo->find(1);
 
         $user = $this->getUser();
         $outingRepo = $this->getDoctrine()->getRepository(Outing::class);
@@ -63,12 +62,22 @@ class OutingController extends AbstractController
         $outingForm->handleRequest($request);
 
         if($outingForm->isValid() && $outingForm->isSubmitted()){
-            $outing->setOUsers($user);
-            $outing->setState($state);
-            $em->persist($outing);
-            $em->flush();
+            if($outingForm->get('create')->isClicked()){
+                $state = $stateRepo->find(1);
+                $outing->setOUsers($user);
+                $outing->setState($state);
+                $em->persist($outing);
+                $em->flush();
+                $this->addFlash('success', 'La sortie a été créée.');
+            } elseif($outingForm->get('publish')->isClicked()){
+                $state = $stateRepo->find(2);
+                $outing->setOUsers($user);
+                $outing->setState($state);
+                $em->persist($outing);
+                $em->flush();
+                $this->addFlash('success', 'La sortie a été publiée');
+            }
         }
-        $this->addFlash('success', 'La sortie a été crée.');
         return $this->redirectToRoute('new_outing');
     }
 }

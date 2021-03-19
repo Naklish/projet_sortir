@@ -1,0 +1,29 @@
+.btn
+{
+
+    box-shadow: 5px 5px 5px #5eb5e0;
+    margin-left: 15%;
+    margin-right: 50px;
+}
+
+h1
+{
+    text-align: center;
+}
+.form-outing
+{
+    margin-top: 5%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+#buttons
+{
+    margin-left: 15%;
+}
+
+#btn-cancel
+{
+    margin-left: 15px;
+    height: 49px;
+}

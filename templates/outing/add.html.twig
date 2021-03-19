@@ -1,19 +1,47 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheet %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/add.css') }}">
+{%  endblock%}
 {% block main %}
     <h1>Ajoutez une nouvelle sortie !</h1>
-
-    {{ form_start(outingForm) }}
-    {{ form_widget(outingForm) }}
-        <button class="btn btn-lg" type="submit">Créer</button>
-        <button class="btn btn-lg">Publier</button>
-        <a class="btn btn-lg" href="{{ path('home') }}">Annuler</a>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-info">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <div class="row form-outing">
+        <div class="col-sm-6">
+                {{ form_start(outingForm) }}
+                {{ form_row(outingForm.name) }}
+                {{ form_row(outingForm.dateHourStart) }}
+                {{ form_row(outingForm.deadlineRegistration) }}
+                {{ form_row(outingForm.duration) }}
+                {{ form_row(outingForm.maxRegistration) }}
+        </div>
+        <div class="col-sm-6">
+                {{ form_row(outingForm.duration) }}
+                {{ form_row(outingForm.description) }}
+                {{ form_row(outingForm.campus) }}
+                {{ form_row(outingForm.city) }}
+                {{ form_row(outingForm.locations) }}
+        </div>
+    </div>
+    <div id="buttons" class="input-group">
+        {# <button class="btn btn-lg" type="submit">Créer</button>
+        <button class="btn btn-lg">Publier</button>#}
+        {{ form_row(outingForm.create) }}
+        {{ form_row(outingForm.publish) }}
+        <a class="btn btn-lg" id="btn-cancel" href="{{ path('home') }}">Annuler</a>
     {{ form_end(outingForm) }}
+    </div>
 
 
     <script>
         let idCity;
         const selectCity = document.getElementById('outing_form_city');
+
         window.onload = function () {
             getCity(selectCity.value);
         };
@@ -36,6 +64,6 @@
                     // on injecte les options dans la balise <select>
                     $selectLocation.innerHTML = options;
                 })
-        };
+        }
     </script>
 {% endblock %}

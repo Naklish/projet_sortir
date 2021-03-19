@@ -1,7 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ parent() }} | Accueil{% endblock %}
-
+{% block stylesheet %}
+{{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+{% endblock %}
 {% block main %}
     <h1 style="text-align: center">Accueil</h1>
 
@@ -46,4 +49,5 @@
         {% endfor %}
         </tbody>
     </table>
+        <a href="{{ path('new_outing') }}" class="btn btn-lg">Créer une sortie</a>
 {% endblock %}
