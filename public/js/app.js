@@ -31,28 +31,32 @@ let countActions = 0;
 function fillActionColumn(userId, orgId, stateId, outingId) {
     const action = document.getElementById("actionColumn");
     action.id = "actionColumn" + countActions;
-    action.innerHTML = "<a href=\"#\">Afficher</a>";
+
+    const url = "http://localhost:8888/projet_sortir/public/";
+    const urlOuting = url + "outing/";
+    const urlUser = url + "user/";
+    action.innerHTML = '<a href="' + urlOuting + "details/" + outingId + '">Afficher</a>';
 
     // Si l'utilisateur connecté est l'organisateur
     if (isOrg(userId, orgId)) {
-        if (stateId !== 1) {
-            action.innerHTML = "<a href=\"#\">Afficher</a> - <a href=\"#\">Annuler</a>";
+        if (stateId !== 1 && stateId !== 6) {
+            action.innerHTML = '<a href="' + urlOuting + "details/" + outingId + '">Afficher</a> - <a href="' + urlOuting + "cancel/" + outingId + '">Annuler</a>';
         } else if (stateId === 1) {
-            action.innerHTML = "<a href=\"#\">Modifier</a> - <a href=\"#\">Publier</a>";
+            action.innerHTML = '<a href="' + urlOuting + "modify/" + outingId + '">Modifier</a> - <a href="' + urlOuting + "publish/" + outingId + '">Publier</a>';
         }
         // Si l'utilisateur connecté n'est pas l'organisateur
     } else {
         if (isRegistered(userId, outingId)) {
             if (stateId === 2) {
-                action.innerHTML = "<a href=\"#\">Afficher</a> - <a href=\"#\">Se désister</a>";
+                action.innerHTML = '<a href="' + urlOuting + "details/" + outingId + '">Afficher</a> - <a href="' + urlUser + "unregister/" + outingId + '">Se désister</a>';
             }
         } else {
-                if (stateId === 2) {
-                    action.innerHTML = "<a href=\"#\">Afficher</a> - <a href=\"#\">S'inscrire</a>";
-                }
+            if (stateId === 2) {
+                action.innerHTML = '<a href="' + urlOuting + "details/" + outingId + '">Afficher</a> - <a href="' + urlUser + "register/" + outingId + '">S\'inscrire</a>';
+            }
         }
     }
-        countActions++;
+    countActions++;
 }
 
 /**
@@ -90,4 +94,26 @@ function isRegistered(userId, outingId) {
     console.log(outingRegisteredUser)
     // Si l'id de l'utilisateur connecté se trouve dans le tableau outingRegisteredUser, on renvoie true
     return outingRegisteredUser.includes(userId);
+}
+
+
+/************************* TRAITEMENT FORMULAIRES *************************/
+let countCampus = 0;
+
+function campusForm(outId) {
+    arrayLine = document.getElementById("tab-line");
+    arrayLine.id = "tab-line" + countCampus;
+    const valueCampus = document.getElementById("campus").value;
+    // console.log("formulaire id : " + valueCampus);
+    // console.log("id sortie parcourue : " + outId);
+
+    if (valueCampus !== "") {
+        if (valueCampus != outId) {
+            arrayLine.remove();
+        } else {
+            // arrayLine.style.display = "block";
+            console.log("coucou");
+        }
+    }
+    countCampus++;
 }
