@@ -8,23 +8,18 @@ use App\Entity\State;
 use App\Form\OutingCancelFormType;
 use App\Form\OutingFormType;
 use App\Form\OutingSearchType;
-use Doctrine\ORM\EntityManager;
-use App\Kernel;
+use App\Repository\OutingReposistory;
 use App\Repository\OutingRepository;
 use App\Repository\StateRepository;
-use Doctrine\DBAL\Exception\ConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class OutingController extends AbstractController
 {
-
     /**
      * @Route("/", name="home")
      * @throws \Doctrine\DBAL\Driver\Exception
@@ -51,6 +46,20 @@ class OutingController extends AbstractController
             'outingSearch' => $outingSearchForm->createView(),
         ]);
     }
+
+//    /**
+//     * @Route("/outing/details/{id}", name="outing_details")
+//     */
+//    public function details($id) {
+//        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+//        $outingRepo = $this->getDoctrine()->getRepository(Outing::class);
+//        $outing = $outingRepo->find($id);
+//
+//        return $this->render('outing/details.html.twig', [
+//            'outing' => $outing
+//        ]);
+//    }
+
 
     //Fonction qui ajoute une nouvelle sortie
     /**
@@ -116,7 +125,6 @@ class OutingController extends AbstractController
     }
 
 
-
     /**
      * @Route("/outing/modify/{idOuting}", name="outing_modify", methods={"GET", "POST"})
      * @param Request $request
@@ -132,7 +140,6 @@ class OutingController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $outing = $outingRepo->find($idOuting);
         $currentUser = $this->getUser();
-
 
         if($currentUser->getId() != $outing->getOUsers()->getId()){
             $this->addFlash('warning', 'Vous n\'êtes pas l\'organisateur de cette sortie'  );
@@ -243,18 +250,15 @@ class OutingController extends AbstractController
 
     //FONCTION qui affiche le contenu d'une sortie
     /**
-     * @Route ("/outing/{id}", name="outing_display",
+     * @Route ("/outing/details/{id}", name="outing_display",
      *     requirements={"id": "\d+"}, methods={"GET"})
      */
-    public function display($id, Request $request)
+    public function display($id)
     {
-
         $outingRepo = $this->getDoctrine()->getRepository(Outing::class);
         $outing = $outingRepo->find($id);
 
         return $this->render('outing/display.html.twig', ["outing" => $outing]);
-
-
     }
 
     /**

@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
 {% endblock %}
 {% block main %}
-    <h1 style="text-align: center">Accueil</h1>
     {% for message in app.flashes('success') %}
         <div class="alert alert-success">
             {{ message }}
@@ -19,7 +18,7 @@
     {% endfor %}
 
     <p>Date du jour : {{ "now" | date('d/m/Y') }}</p>
-    <p>Participant : {{ currentUser.lastname }} {{ currentUser.firstname | slice(0,1) }}.</p>
+    <p>Participant : {{ currentUser.name }} {{ currentUser.firstname | slice(0,1) }}.</p>
 
     <!------------ Balises servant seulement à récupérer des infos en JS ------------>
     {% set arrayRegUsers = [] %}
@@ -80,11 +79,14 @@
                     <td id="registerColumn">
                         <script>checkRegister({{ currentUser.id }}, {{ outing.id }})</script>
                     </td>
-                    <td>{{ outing.oUsers.lastname }} {{ outing.oUsers.firstname | slice(0, 1) }}.</td>
+                    <td>{{ outing.oUsers.name }} {{ outing.oUsers.firstname | slice(0, 1) }}.</td>
                     <td id="actionColumn">
+                        <a href=# id="link">lien</a>
+                        <a href=# id="link2"></a>
                         <script>fillActionColumn({{ currentUser.id }}, {{ outing.oUsers.id }}, {{ outing.state.id }}, {{ outing.id }})</script>
                     </td>
                 </tr>
+                <script>campusForm({{ outing.campus.id }})</script>
             {% endfor %}
             </tbody>
         </table>

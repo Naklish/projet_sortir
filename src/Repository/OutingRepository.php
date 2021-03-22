@@ -8,7 +8,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * @method Outing|null find($id, $lockMode = null, $lockVersion = null)
@@ -51,12 +50,12 @@ class OutingRepository extends ServiceEntityRepository
 
     public function findPublished($userId): QueryBuilder
     {
-        $endDate = (new \DateTime("now"))->modify('-1 week');
+        $endDate = (new \DateTime("now"))->modify('-1 month');
         return $this->createQueryBuilder('o')
             ->join('o.campus', 'oc')
             ->andWhere('o.state != 1 OR o.state = 1 AND o.o_users = :id')
+            ->andWhere('o.dateHourStart > :date')
             ->setParameter('id', $userId)
-            ->andWhere('o.deadlineRegistration > :date')
             ->setParameter('date', $endDate);
     }
 

@@ -28,7 +28,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $lastname;
+    private $name;
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -102,14 +102,14 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function getLastName(): ?string
+    public function getName(): ?string
     {
-        return $this->lastname;
+        return $this->name;
     }
 
-    public function setLastName(string $lastname): self
+    public function setLastName(string $name): self
     {
-        $this->lastname = $lastname;
+        $this->name = $name;
 
         return $this;
     }

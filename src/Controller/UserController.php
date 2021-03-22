@@ -65,16 +65,16 @@ class UserController extends AbstractController
             $image = new Image();
             $imageFile = $userForm->get('photo')->getData();
 
-            if($imageFile){
-               $originalFilename = pathinfo($imageFile->getClientOriginalName(). '.' . $imageFile->guessExtension(), PATHINFO_FILENAME);
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName() . '.' . $imageFile->guessExtension(), PATHINFO_FILENAME);
 
-               $imageFile->move(
-                   $this->getParameter('image_directory'),
-                   $originalFilename
-               );
-               $image->setImageFileName($originalFilename);
-               $user->setImage($image);
-               $em->persist($image);
+                $imageFile->move(
+                    $this->getParameter('image_directory'),
+                    $originalFilename
+                );
+                $image->setImageFileName($originalFilename);
+                $user->setImage($image);
+                $em->persist($image);
             }
 
             $hashed = $encoder->encodePassword($user, $password);
@@ -85,7 +85,7 @@ class UserController extends AbstractController
 
                 $this->addFlash('notice', 'Profil mis à jour');
 
-            } catch (UniqueConstraintViolationException $e){
+            } catch (UniqueConstraintViolationException $e) {
                 $this->addFlash('error', 'Le pseudo ou l\'e-mail sont déjà utilisés.');
 
             } finally {
@@ -105,20 +105,18 @@ class UserController extends AbstractController
         ]);
     }
 
-    //FONCTION qui retourne les données utilisateur
+    //FONCTION qui retourne img_profile  les données utilisateur
+
     /**
      * @Route ("/{id}", name="user_infos",
      *     requirements={"id": "\d+"}, methods={"GET"})
      */
-        public function infos($id, Request $request)
-        {
+    public function infos($id, Request $request)
+    {
+        $userRepo = $this->getDoctrine()->getRepository(User::class);
+        $user = $userRepo->find($id);
 
-            $userRepo = $this->getDoctrine()->getRepository(User::class);
-            $user = $userRepo->find($id);
-
-            return $this->render('user/infos.html.twig', ["user" => $user]);
-
-
+        return $this->render('user/infos.html.twig', ["user" => $user]);
     }
 
     /**
@@ -136,12 +134,12 @@ class UserController extends AbstractController
 
         $currentOuting = $outingRepo->find($idOuting);
 
-        if($currentUser->getId() == $currentOuting->getOUsers()->getId()){
+        if ($currentUser->getId() == $currentOuting->getOUsers()->getId()) {
             $this->addFlash('warning', 'Vous êtes l\'organisateur de cette sortie, vous êtes déjà inscrit.');
             return $this->redirectToRoute('home');
         }
 
-        if($currentOuting->getDeadlineRegistration() < $today ){
+        if ($currentOuting->getDeadlineRegistration() < $today) {
             $this->addFlash('warning', 'Incription impossible : Les inscriptions sont cloturées.');
             return $this->redirectToRoute('home');
         }
@@ -150,7 +148,7 @@ class UserController extends AbstractController
             $em->persist($currentOuting);
             $em->flush();
 
-        } catch (UniqueConstraintViolationException $e){
+        } catch (UniqueConstraintViolationException $e) {
             $this->addFlash('warning', 'Vous êtes déjà inscrit à la sortie ');
             return $this->redirectToRoute('home');
         }
