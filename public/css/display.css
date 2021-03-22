@@ -1,0 +1,13 @@
+.left{
+    float:left;
+    width: 60%;
+}
+
+.right{
+    overflow: auto;
+}
+
+.users{
+    float: left;
+}
+

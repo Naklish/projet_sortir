@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+{% block stylesheet %}
+
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/display.css') }}">
+{%  endblock%}
+
+{% block main %}
+
+    <div class="title">
+        <h1 style="text-align: center">Sortie : {{ outing.name }}</h1>
+    </div>
+<div class="infos">
+    <div class="left">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><b>Nom de la sortie :</b> {{ outing.name }}</li>
+        <li class="list-group-item"><b>Date et heure de la sortie :</b> {{ outing.dateHourStart | date('d/m/Y H:i') }}</li>
+        <li class="list-group-item"><b>Nombre de places :</b> {{ outing.maxRegistration }}</li>
+        <li class="list-group-item"><b>Durée :</b> {{ outing.duration }} minutes</li>
+        <li class="list-group-item"><b>Description et infos :</b> {{ outing.description }}</li>
+    </ul>
+    </div>
+
+    <div class="right">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><b>Campus :</b> {{ outing.campus.name }}</li>
+        <li class="list-group-item"><b>Lieu :</b> {{ outing.locations.name }}</li>
+        <li class="list-group-item"><b>Rue :</b> {{ outing.locations.address }}</li>
+        <li class="list-group-item"><b>Code postal :</b> {{ outing.locations.city.zipCode }}</li>
+        <li class="list-group-item"><b>Latitude :</b> {{ outing.locations.latitude }}</li>
+        <li class="list-group-item"><b>Longitude :</b> {{ outing.locations.longitude }}</li>
+    </ul>
+    </div>
+</div>
+    </br>
+    <h4>Liste des participants inscrits :</h4>
+    <div class="users">
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>Pseudo</th>
+            <th>Nom</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in outing.registeredUser %}
+            <tr class="tab-line">
+                <td>{{ user.username }}</td>
+                <td>{{ user.firstName}} {{ user.name }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+
+{% endblock %}

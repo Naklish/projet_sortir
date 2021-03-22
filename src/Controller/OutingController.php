@@ -228,4 +228,37 @@ class OutingController extends AbstractController
             'outing' => $outing
         ]);
     }
+
+    //FONCTION qui affiche le contenu d'une sortie
+    /**
+     * @Route ("/outing/{id}", name="outing_display",
+     *     requirements={"id": "\d+"}, methods={"GET"})
+     */
+    public function display($id, Request $request)
+    {
+
+        $outingRepo = $this->getDoctrine()->getRepository(Outing::class);
+        $outing = $outingRepo->find($id);
+
+        return $this->render('outing/display.html.twig', ["outing" => $outing]);
+
+
+    }
+
+    /**
+     * @Route ("/outing/{id}", name="outing_disp",
+     *     requirements={"id": "\d+"}, methods={"GET"})
+     * @param Request $request
+     * @return Response
+     */
+    public function getU(Request $request)
+    {
+
+       $request->query->get('id');
+       $idOuting = $request->getContent();
+
+
+       return $this->render('outing/display.html.twig', ["idOuting" => $idOuting]);
+
+    }
 }

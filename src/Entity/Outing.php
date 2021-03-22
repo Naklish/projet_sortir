@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OutingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\DateType;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -219,7 +220,7 @@ class Outing
     /**
      * @return mixed
      */
-    public function getRegisteredUser()
+    public function getRegisteredUser(): Collection
     {
         return $this->registered_user;
     }

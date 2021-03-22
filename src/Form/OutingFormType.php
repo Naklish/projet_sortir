@@ -6,7 +6,6 @@ use App\Entity\Campus;
 use App\Entity\City;
 use App\Entity\Location;
 use App\Entity\Outing;
-use phpDocumentor\Reflection\Type;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
@@ -69,6 +68,26 @@ class OutingFormType extends AbstractType
             ->add('publish', SubmitType::class, [
                 'label' => 'Publier',
                 'attr' => array('class' => 'btn btn-lg')
+            ])
+
+            ->add('rue', TextType::class, [
+                'label' => 'Rue :',
+                'mapped' => false
+            ])
+
+            ->add('codePostal', TextType::class, [
+                'label' => 'Code postal :',
+                'mapped' => false
+            ])
+
+            ->add('latitude', TextType::class, [
+                'label' => 'Latitude :',
+                'mapped' => false
+            ])
+
+            ->add('longitude', TextType::class, [
+                'label' => 'Longitude :',
+                'mapped' => false
             ])
             ->add('remove', SubmitType::class, [
                 'label' => 'Supprimer',
