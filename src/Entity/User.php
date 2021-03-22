@@ -303,6 +303,9 @@ class User implements UserInterface
         $this->image = $image;
     }
 
-
+    public function addOuting(Outing $outing)
+    {
+        $this->outings->add($outing);
+    }
 
 }

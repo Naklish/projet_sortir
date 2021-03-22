@@ -7,7 +7,16 @@
 {% endblock %}
 {% block main %}
     <h1 style="text-align: center">Accueil</h1>
-
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('warning') %}
+        <div class="alert alert-warning">
+            {{ message }}
+        </div>
+    {% endfor %}
     <table class="table table-striped table-bordered">
         <thead>
         <tr>
@@ -38,9 +47,9 @@
                 <td>{{ outing.oUsers.name }} {{ outing.oUsers.firstname | slice(0, 1) }}.</td>
                 <td><a href="#">Afficher</a>
                     {% if (outing.state.id is same as 3) %}
-                        - <a href="#">Se désister</a>
+                            - <a href="#">Se désister</a>
                         {% elseif (outing.state.id is same as 2) %}
-                        - <a href="#">S'inscrire</a>
+                        - <a href="{{ path('user_register_outing',  {'idOuting': outing.id}) }} ">S'inscrire</a>
                     {% endif %}
                     <br>
                     (ajouter du JS pour la gestion d'inscription + d'organisateur)

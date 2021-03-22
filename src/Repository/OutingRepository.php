@@ -31,4 +31,14 @@ class OutingRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findById($idOuting)
+    {
+        return $this->createQueryBuilder('qb')
+            ->andWhere('qb.id = :val')
+            ->setParameter('val', $idOuting)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

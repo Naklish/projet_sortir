@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{{ asset('css/add.css') }}">
 {%  endblock%}
 {% block main %}
-    <h1>Ajoutez une nouvelle sortie !</h1>
+    <h1>Modifier une sortie</h1>
     <br>
     <div class="col-sm-3 offset-sm-4">
         {% for message in app.flashes('success') %}
@@ -22,27 +22,31 @@
 
     <div class="row form-outing">
         <div class="col-sm-6">
-                {{ form_start(outingForm) }}
-                {{ form_row(outingForm.name) }}
-                {{ form_row(outingForm.dateHourStart) }}
-                {{ form_row(outingForm.deadlineRegistration) }}
-                {{ form_row(outingForm.duration) }}
-                {{ form_row(outingForm.maxRegistration) }}
+            {{ form_start(outingForm) }}
+
+            {{ form_row(outingForm.name) }}
+            {{ form_row(outingForm.dateHourStart) }}
+            {{ form_row(outingForm.deadlineRegistration) }}
+            {{ form_row(outingForm.duration) }}
+            {{ form_row(outingForm.maxRegistration) }}
         </div>
         <div class="col-sm-6">
-                {{ form_row(outingForm.duration) }}
-                {{ form_row(outingForm.description) }}
-                {{ form_row(outingForm.campus) }}
-                {{ form_row(outingForm.city) }}
-                {{ form_row(outingForm.locations) }}
+            {{ form_row(outingForm.duration) }}
+            {{ form_row(outingForm.description) }}
+            {{ form_row(outingForm.campus) }}
+            {{ form_row(outingForm.city) }}
+            {{ form_row(outingForm.locations) }}
         </div>
     </div>
     <div id="buttons" class="input-group">
-        {{ form_row(outingForm.create) }}
+        {{ form_row(outingForm.modify) }}
         {{ form_row(outingForm.publish) }}
+        {{ form_row(outingForm.remove) }}
+
         <a class="btn btn-lg" id="btn-cancel" href="{{ path('home') }}">Annuler</a>
         {{ form_row(outingForm._token) }}
         {{ form_end(outingForm, {'render_rest': false}) }}
+
     </div>
 
 

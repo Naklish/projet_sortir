@@ -6,6 +6,7 @@ use App\Entity\Campus;
 use App\Entity\City;
 use App\Entity\Location;
 use App\Entity\Outing;
+use phpDocumentor\Reflection\Type;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
@@ -27,14 +28,16 @@ class OutingFormType extends AbstractType
                 'label' => 'Nom de la sortie :'
             ])
             ->add('dateHourStart', DateTimeType::class, [
-                'label' => 'Date et heure de la sortie :'
+                'label' => 'Date et heure de la sortie :',
+                'data' => new \DateTime()
             ])
             ->add('duration', IntegerType::class, [
                 'label' => 'Durée (minutes) :',
                 'attr' => array('min' => 0)
             ])
-            ->add('deadlineRegistration', DateTimeType::class, [
-                'label' => 'Date limite d\'inscription :'
+            ->add('deadlineRegistration', DateType::class, [
+                'label' => 'Date limite d\'inscription :',
+                'data' => new \DateTime()
             ])
             ->add('maxRegistration', IntegerType::class, [
                 'label' => 'Nombre de places :',
@@ -67,7 +70,22 @@ class OutingFormType extends AbstractType
                 'label' => 'Publier',
                 'attr' => array('class' => 'btn btn-lg')
             ])
-
+            ->add('remove', SubmitType::class, [
+                'label' => 'Supprimer',
+                'attr' => array('class' => 'btn btn-lg')
+            ])
+            ->add('modify', SubmitType::class, [
+                'label' => 'modifier',
+                'attr' => array('class' => 'btn btn-lg')
+            ])
+            ->add('cancelMotive', TextareaType::class, [
+                'label' => 'Motif :',
+                'mapped' => false
+            ])
+            ->add('register', SubmitType::class, [
+                'label' => 'Enregister',
+                'attr' => array('class' => 'btn btn-lg')
+            ])
 
             // il faut rajouter l'option : 'mapped' => false,
         ;

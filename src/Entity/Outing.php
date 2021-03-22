@@ -82,6 +82,12 @@ class Outing
      */
     private $locations;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $motive_cancel;
+
+
     public function __construct()
     {
         $this->registered_user = new ArrayCollection();
@@ -242,4 +248,42 @@ class Outing
         $this->locations = $locations;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCancelMotive()
+    {
+        return $this->cancel_motive;
+    }
+
+    /**
+     * @param mixed $cancel_motive
+     */
+    public function setCancelMotive($cancel_motive): void
+    {
+        $this->cancel_motive = $cancel_motive;
+    }
+
+
+
+    public function addRegisteredUser(User $user)
+    {
+        $this->registered_user->add($user);
+        $user->getOutings()->add($this);
+    }
+
+    public function unregisterUser(User $user)
+    {
+        $this->registered_user->removeElement($user);
+        $user->getOutings()->removeElement($this);
+    }
+
+    public function unregisterAllUsers()
+    {
+        foreach ($this->registered_user as $user)
+        {
+            $user->getOutings()->removeElement($this);
+            $this->registered_user->removeElement($user);
+        }
+    }
 }
