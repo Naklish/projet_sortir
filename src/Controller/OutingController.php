@@ -3,14 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\Outing;
+use App\Entity\OutingSearch;
 use App\Entity\State;
 use App\Form\OutingCancelFormType;
 use App\Form\OutingFormType;
+use App\Form\OutingSearchType;
+use Doctrine\ORM\EntityManager;
 use App\Kernel;
 use App\Repository\OutingRepository;
 use App\Repository\StateRepository;
 use Doctrine\DBAL\Exception\ConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,20 +27,28 @@ class OutingController extends AbstractController
 
     /**
      * @Route("/", name="home")
+     * @throws \Doctrine\DBAL\Driver\Exception
      */
-    public function list(): Response
+    public function list(EntityManagerInterface $em, Request $request, PaginatorInterface $paginator): Response
     {
+        $outingSearch = new OutingSearch();
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $currentUser = $this->getUser();
         $userId = $currentUser->getId();
 
+        $outingSearchForm = $this->createForm(OutingSearchType::class, $outingSearch);
+        $outingSearchForm->handleRequest($request);
+
         $outingRepo = $this->getDoctrine()->getRepository(Outing::class);
-        $outings = $outingRepo->findAll();
+        $outings = $paginator->paginate($outingRepo->findPublishedOutings($userId, $outingSearch),
+        $request->query->getInt('page', 1),
+        10);
 
 
         return $this->render("default/home.html.twig", [
             'outings' => $outings,
-            'currentUser' => $userId,
+            'currentUser' => $currentUser,
+            'outingSearch' => $outingSearchForm->createView(),
         ]);
     }
 

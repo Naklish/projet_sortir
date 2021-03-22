@@ -3,8 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Outing;
+use App\Entity\OutingSearch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * @method Outing|null find($id, $lockMode = null, $lockVersion = null)
@@ -20,17 +24,41 @@ class OutingRepository extends ServiceEntityRepository
         parent::__construct($registry, Outing::class);
     }
 
-    /*
-    public function findOneBySomeField($value): ?Outing
+    public function findPublishedOutings($userId, OutingSearch $outingSearch): Query
     {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $query = $this->findPublished($userId);
+
+        if($outingSearch->getMinDate()) {
+            if($outingSearch->getMaxDate()) {
+                $query = $query->andWhere('o.dateHourStart >= :minDate AND o.dateHourStart <= :maxDate')
+                    ->setParameter('minDate', $outingSearch->getMinDate())
+                    ->setParameter('maxDate', $outingSearch->getMaxDate());
+            }
+        }
+
+        if($outingSearch->getSearchBar()) {
+            $query = $query->andWhere('o.name LIKE :word')
+                ->setParameter("word", '%' . $outingSearch->getSearchBar() . '%');
+        }
+
+        if($outingSearch->getCampus()) {
+            $query = $query->andWhere('oc.id = :campus')
+                ->setParameter('campus', $outingSearch->getCampus());
+        }
+
+            return $query->getQuery();
     }
-    */
+
+    public function findPublished($userId): QueryBuilder
+    {
+        $endDate = (new \DateTime("now"))->modify('-1 week');
+        return $this->createQueryBuilder('o')
+            ->join('o.campus', 'oc')
+            ->andWhere('o.state != 1 OR o.state = 1 AND o.o_users = :id')
+            ->setParameter('id', $userId)
+            ->andWhere('o.deadlineRegistration > :date')
+            ->setParameter('date', $endDate);
+    }
 
     public function findById($idOuting)
     {

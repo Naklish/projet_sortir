@@ -21,7 +21,7 @@ class State
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $name;
+    private $stateName;
 
     public function getId(): ?int
     {
@@ -31,6 +31,7 @@ class State
     //RELATION STATE/OUTING
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Outing", mappedBy="state")
+     *
      */
     private $outing;
 
@@ -41,14 +42,14 @@ class State
 
 
 
-    public function getName(): ?string
+    public function getStateName(): ?string
     {
-        return $this->name;
+        return $this->stateName;
     }
 
-    public function setName(string $name): self
+    public function setStateName(string $stateName): self
     {
-        $this->name = $name;
+        $this->stateName = $stateName;
 
         return $this;
     }
