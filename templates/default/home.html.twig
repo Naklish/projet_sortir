@@ -17,46 +17,85 @@
             {{ message }}
         </div>
     {% endfor %}
-    <table class="table table-striped table-bordered">
-        <thead>
-        <tr>
-            <th>Nom de la sortie</th>
-            <th>Date de la sortie</th>
-            <th>Clôture</th>
-            <th>Inscrits/places</th>
-            <th>Etat</th>
-            <th>Inscrit</th>
-            <th>Organisateur</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for outing in outings %}
-            <tr class="tab-line">
-                <td>{{ outing.name }}</td>
-                <td>{{ outing.dateHourStart | date('d/m/Y H:i') }}</td>
-                <td>{{ outing.deadlineRegistration | date('d/m/Y') }}</td>
-                <td>{{ outing.registeredUser | length }}/{{ outing.maxRegistration }}</td>
-                <td>{{ outing.state.name }}</td>
-                <td> {% for users in outing.registeredUser %}
-                        {% if currentUser in [users.id] %}
-                            X
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td>{{ outing.oUsers.name }} {{ outing.oUsers.firstname | slice(0, 1) }}.</td>
-                <td><a href="#">Afficher</a>
-                    {% if (outing.state.id is same as 3) %}
-                            - <a href="#">Se désister</a>
-                        {% elseif (outing.state.id is same as 2) %}
-                        - <a href="{{ path('user_register_outing',  {'idOuting': outing.id}) }} ">S'inscrire</a>
-                    {% endif %}
-                    <br>
-                    (ajouter du JS pour la gestion d'inscription + d'organisateur)
-                </td>
-            </tr>
+
+    <p>Date du jour : {{ "now" | date('d/m/Y') }}</p>
+    <p>Participant : {{ currentUser.lastname }} {{ currentUser.firstname | slice(0,1) }}.</p>
+
+    <!------------ Balises servant seulement à récupérer des infos en JS ------------>
+    {% set arrayRegUsers = [] %}
+    {% for outing in outings %}
+        {% for users in outing.registeredUser %}
+            {% set arrayRegUsers = arrayRegUsers | merge([{id: users.id, oid: outing.id }]) %}
         {% endfor %}
-        </tbody>
-    </table>
+    {% endfor %}
+    <input type="hidden" id="arrayRegUsers" value="{{ arrayRegUsers|json_encode }}">
+    <!------------------------------------------------------------------------------->
+
+    <!-- Formulaire de recherche -->
+    {{ form_start(outingSearch) }}
+    <div class="row">
+        <div class="col">
+            {{ form_row(outingSearch.campus) }}
+            {{ form_row(outingSearch.searchBar) }}
+            <div class="row">
+                <div class="col">
+                    {{ form_row(outingSearch.minDate) }}
+                </div>
+                <div class="col">
+                    {{ form_row(outingSearch.maxDate) }}
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <button class="btn btn-primary">Rechercher</button>
+        </div>
+    </div>
+    {{ form_end(outingSearch) }}
+
+    <!-- Tableau de sorties -->
+    <div class="array">
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>Nom de la sortie</th>
+                <th>Date de la sortie</th>
+                <th>Clôture</th>
+                <th>Inscrits/places</th>
+                <th>Etat</th>
+                <th>Inscrit</th>
+                <th>Organisateur</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for outing in outings %}
+                <input type="hidden" id="arrayRegUsers" value="{{ arrayRegUsers|json_encode }}">
+                <tr id="tab-line">
+                    <td>{{ outing.name }}</td>
+                    <td>{{ outing.dateHourStart | date('d/m/Y H:i') }}</td>
+                    <td>{{ outing.deadlineRegistration | date('d/m/Y') }}</td>
+                    <td>{{ outing.registeredUser | length }}/{{ outing.maxRegistration }}</td>
+                    <td>{{ outing.state.stateName }}</td>
+                    <td id="registerColumn">
+                        <script>checkRegister({{ currentUser.id }}, {{ outing.id }})</script>
+                    </td>
+                    <td>{{ outing.oUsers.lastname }} {{ outing.oUsers.firstname | slice(0, 1) }}.</td>
+                    <td id="actionColumn">
+                        <script>fillActionColumn({{ currentUser.id }}, {{ outing.oUsers.id }}, {{ outing.state.id }}, {{ outing.id }})</script>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
         <a href="{{ path('new_outing') }}" class="btn btn-lg">Créer une sortie</a>
+    </div>
+    <div class="pagination text-center">
+        {{ knp_pagination_render(outings) }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script type="text/javascript">
+    </script>
 {% endblock %}
