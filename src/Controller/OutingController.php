@@ -14,6 +14,7 @@ use App\Repository\StateRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,7 +25,7 @@ class OutingController extends AbstractController
      * @Route("/", name="home")
      * @throws \Doctrine\DBAL\Driver\Exception
      */
-    public function list(EntityManagerInterface $em, Request $request, PaginatorInterface $paginator): Response
+    public function list(EntityManagerInterface $em, Request $request, PaginatorInterface $paginator, StateRepository $stateRepo): Response
     {
         $outingSearch = new OutingSearch();
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
@@ -39,6 +40,9 @@ class OutingController extends AbstractController
         $request->query->getInt('page', 1),
         10);
 
+        foreach ($outings as $outs){
+            $outs->checkState($stateRepo);
+        }
 
         return $this->render("default/home.html.twig", [
             'outings' => $outings,
@@ -276,5 +280,27 @@ class OutingController extends AbstractController
 
        return $this->render('outing/display.html.twig', ["idOuting" => $idOuting]);
 
+    }
+
+    /**
+     * @Route("/outing/publish/{idOuting}", name="outing_publish")
+     * @param $idOuting
+     * @param OutingRepository $outingRepo
+     * @param StateRepository $stateRepo
+     * @param EntityManagerInterface $em
+     * @return RedirectResponse
+     */
+    public function publish($idOuting, OutingRepository $outingRepo, StateRepository $stateRepo, EntityManagerInterface $em): RedirectResponse
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+        $outing = $outingRepo->find($idOuting);
+
+        $state = $stateRepo->find(2);
+        $outing->setState($state);
+        $em->persist($outing);
+        $em->flush();
+
+        $this->addFlash('success', 'La sortie a été publiée');
+        return $this->redirectToRoute('home');
     }
 }

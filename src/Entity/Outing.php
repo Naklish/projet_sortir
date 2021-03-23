@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\OutingRepository;
+use App\Repository\StateRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\DateType;
@@ -285,6 +286,32 @@ class Outing
         {
             $user->getOutings()->removeElement($this);
             $this->registered_user->removeElement($user);
+        }
+    }
+
+    public function checkState(StateRepository $stateRepo)
+    {
+        $today = new \DateTime();
+        if($this->getState()->getId() == 2)
+        {
+            if($today > $this->getDeadlineRegistration()){
+                $state = $stateRepo->find(3);
+                $this->setState($state);
+            }
+            if($today > $this->getDateHourStart()){
+                $state = $stateRepo->find(4);
+                $this->setState($state);
+            }
+        }
+        if ($this->getState()->getId() == 4)
+        {
+            try {
+                if ($today > $this->getDateHourStart()->add(new \DateInterval('PT' . $this->getDuration() . 'M'))) {
+                    $state = $stateRepo->find(5);
+                    $this->setState($state);
+                }
+            } catch (\Exception $e) {
+            }
         }
     }
 }
