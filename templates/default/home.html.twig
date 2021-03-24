@@ -2,8 +2,6 @@
 
 {% block title %}{{ parent() }} | Accueil{% endblock %}
 {% block stylesheet %}
-{{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
 {% endblock %}
 {% block main %}
     {% for message in app.flashes('success') %}
@@ -17,8 +15,10 @@
         </div>
     {% endfor %}
 
-    <p>Date du jour : {{ "now" | date('d/m/Y') }}</p>
-    <p>Participant : {{ currentUser.name }} {{ currentUser.firstname | slice(0,1) }}.</p>
+    <div class="user-info text-right">
+        <h6>Date du jour : {{ "now" | date('d/m/Y') }}</h6>
+        <h6>Participant : {{ currentUser.name }} {{ currentUser.firstname | slice(0,1) }}.</h6>
+    </div>
 
     <!------------ Balises servant seulement à récupérer des infos en JS ------------>
     {% set arrayRegUsers = [] %}
@@ -30,29 +30,33 @@
     <input type="hidden" id="arrayRegUsers" value="{{ arrayRegUsers|json_encode }}">
     <!------------------------------------------------------------------------------->
 
+    <h5 id="form-title">Filtrer les sorties</h5>
     <!-- Formulaire de recherche -->
     {{ form_start(outingSearch) }}
-    <div class="row">
-        <div class="col">
+    <div class="form row">
+        <div class="col-xl-5 col-md-6 col-sm-12 mb-4">
             {{ form_row(outingSearch.campus) }}
             {{ form_row(outingSearch.searchBar) }}
-            <div class="row">
-                <div class="col">
+            <div class="row form-inline">
+                <div class="col-sm-6">
                     {{ form_row(outingSearch.minDate) }}
                 </div>
-                <div class="col">
+                <div class="col-sm-6">
                     {{ form_row(outingSearch.maxDate) }}
                 </div>
             </div>
         </div>
-        <div class="col">
-            <button class="btn btn-primary">Rechercher</button>
+        <div class="col-xl-4 col-md-6 col-sm-12">
+            {{ form_rest(outingSearch) }}
+        </div>
+        <div class="col-xl-3 col-sm-12 text-center">
+            <button class="btn btn-outline-primary btn-search">Rechercher</button>
         </div>
     </div>
     {{ form_end(outingSearch) }}
 
     <!-- Tableau de sorties -->
-    <div class="array">
+    <div class="array mt-5">
         <table class="table table-striped table-bordered">
             <thead>
             <tr>
@@ -79,7 +83,7 @@
                     <td id="registerColumn">
                         <script>checkRegister({{ currentUser.id }}, {{ outing.id }})</script>
                     </td>
-                    <td>{{ outing.oUsers.name }} {{ outing.oUsers.firstname | slice(0, 1) }}.</td>
+                    <td><a href="{{ path('user_infos', {'id': outing.oUsers.id}) }}">{{ outing.oUsers.name }} {{ outing.oUsers.firstname | slice(0, 1) }}.</a></td>
                     <td id="actionColumn">
                         <a href=# id="link">lien</a>
                         <a href=# id="link2"></a>
@@ -90,7 +94,7 @@
             {% endfor %}
             </tbody>
         </table>
-        <a href="{{ path('new_outing') }}" class="btn btn-lg">Créer une sortie</a>
+        <a href="{{ path('new_outing') }}" class="btn btn btn-outline-primary btn-create">Créer une sortie</a>
     </div>
     <div class="pagination text-center">
         {{ knp_pagination_render(outings) }}

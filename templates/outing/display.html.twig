@@ -1,56 +1,71 @@
 {% extends 'base.html.twig' %}
 {% block stylesheet %}
-
-    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/display.css') }}">
-{%  endblock%}
+{% endblock %}
 
 {% block main %}
 
     <div class="title">
-        <h1 style="text-align: center">Sortie : {{ outing.name }}</h1>
+        <h2 class="text-center mt-5">Sortie - {{ outing.name }}</h2>
+        {% if outing.state.id == 6 %}
+            <h3 class="text-center canceled">- Sortie annulée -</h3>
+        {% endif %}
     </div>
-<div class="infos">
-    <div class="left">
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item"><b>Nom de la sortie :</b> {{ outing.name }}</li>
-        <li class="list-group-item"><b>Date et heure de la sortie :</b> {{ outing.dateHourStart | date('d/m/Y H:i') }}</li>
-        <li class="list-group-item"><b>Nombre de places :</b> {{ outing.maxRegistration }}</li>
-        <li class="list-group-item"><b>Durée :</b> {{ outing.duration }} minutes</li>
-        <li class="list-group-item"><b>Description et infos :</b> {{ outing.description }}</li>
-    </ul>
-    </div>
+    <div class="infos row mt-5">
+        <div class="left offset-md-3 col-md-3">
+            <ul class="list-group">
+                <li class="list-group-item border-0"><b>Nom de la sortie :</b> {{ outing.name }}</li>
+                <li class="list-group-item border-0"><b>Date et heure de la sortie
+                        :</b> {{ outing.dateHourStart | date('d/m/Y H:i') }}</li>
+                <li class="list-group-item border-0"><b>Nombre de places :</b> {{ outing.maxRegistration }}</li>
+                <li class="list-group-item border-0"><b>Durée :</b> {{ outing.duration }} minutes</li>
+                <li class="list-group-item border-0"><b>Description et infos :</b> {{ outing.description }}</li>
+            </ul>
+        </div>
 
-    <div class="right">
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item"><b>Campus :</b> {{ outing.campus.name }}</li>
-        <li class="list-group-item"><b>Lieu :</b> {{ outing.locations.name }}</li>
-        <li class="list-group-item"><b>Rue :</b> {{ outing.locations.address }}</li>
-        <li class="list-group-item"><b>Code postal :</b> {{ outing.locations.city.zipCode }}</li>
-        <li class="list-group-item"><b>Latitude :</b> {{ outing.locations.latitude }}</li>
-        <li class="list-group-item"><b>Longitude :</b> {{ outing.locations.longitude }}</li>
-    </ul>
+        <div class="right col-md-4">
+            <ul class="list-group">
+                <li class="list-group-item border-0"><b>Campus :</b> {{ outing.campus.name }}</li>
+                <li class="list-group-item border-0"><b>Lieu :</b> {{ outing.locations.name }}</li>
+                <li class="list-group-item border-0"><b>Rue :</b> {{ outing.locations.address }}</li>
+                <li class="list-group-item border-0"><b>Code postal :</b> {{ outing.locations.city.zipCode }}</li>
+                <li class="list-group-item border-0"><b>Latitude :</b> {{ outing.locations.latitude }}</li>
+                <li class="list-group-item border-0"><b>Longitude :</b> {{ outing.locations.longitude }}</li>
+            </ul>
+        </div>
     </div>
-</div>
     </br>
-    <h4>Liste des participants inscrits :</h4>
-    <div class="users">
-    <table class="table table-striped table-bordered">
-        <thead>
-        <tr>
-            <th>Pseudo</th>
-            <th>Nom</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for user in outing.registeredUser %}
-            <tr class="tab-line">
-                <td>{{ user.username }}</td>
-                <td>{{ user.firstName}} {{ user.name }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="row mt-3 mb-3">
+        <div class="offset-md-1 col-md-4">
+            <h5 class="">Liste des participants inscrits :</h5>
+            {% if outing.registeredUser is not empty %}
+            <div class="users">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Pseudo</th>
+                        <th>Nom</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in outing.registeredUser %}
+                        <tr class="tab-line">
+                            <td class="username">{{ user.username }}</td>
+                            <td>{{ user.firstName }} {{ user.name }}</td>
+                        </tr>
+                    {% endfor %}
+                    {% else %}
+                        <h6> - Il n'y a pas encore d'inscrit.</h6>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        <div class="offset-md-1 col-md-5">
+            {% if outing.cancelMotive is not empty %}
+                <h4 class="canceled">Motif de l'annulation :</h4>
+                <h6>{{ outing.cancelMotive }}</h6>
+            {% endif %}
+        </div>
     </div>
 
 

@@ -1,57 +1,50 @@
 {% extends 'base.html.twig' %}
-
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ asset('css/infos.css') }}">
+{% endblock %}
 {% block title %}
     Profil de {{ user.username }}
 {% endblock %}
 
-
-
 {% block main %}
-
-    {#  Pseudo (centré) de l'utilisateur #}
-    <div class="pseudo">
-        <h1 style="text-align: center"> {{ user.username }}</h1>
+    <div class="pseudo mt-4 mb-4">
+        <h2 class="text-center">Profil - {{ user.username }}</h2>
     </div>
 
-    {#  Photo de profil de l'utilisateur #}
-    <div class="picture">
-        <img src="" alt="img_profile" style="width:100px"/>
+    <div class="row mt-5">
+        <div class="offset-md-1 col-md-2">
+            {# Photo de profil de l'utilisateur #}
+            <div class="picture">
+                <img src="" alt="img-profile" id="img-profile"/>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="row flex">
+                <div id="label" class="col-md-5">
+                    <p>Prénom :</p>
+                    <p>Nom :</p>
+                    <p>Téléphone :</p>
+                    <p>Email :</p>
+                    <p>Campus :</p>
+                </div>
+                <div id="infos" class="col-md-5">
+                    <p>{{ user.firstname }}</p>
+                    <p>{{ user.name }}</p>
+                    <p>{{ user.phone }}</p>
+                    <p>{{ user.mail }}</p>
+                    <p>{{ user.campus.name }}</p>
+                </div>
+            </div>
+            <div class="btn_home text-center mt-5">
+                <a class="btn btn-outline-primary" href="{{ path('home') }}"> Retour</a>
+            </div>
+        </div>
     </div>
 
-    {#  Informations de l'utilisateur #}
-    <div class="infos">
-
-        <div class="firstname">
-            <p>Prénom : {{ user.firstname }}</p>
-        </div>
-
-        <div class="name">
-            <p>Nom : {{ user.name }}</p>
-        </div>
-
-        <div class="phone">
-            <p>Téléphone : {{ user.phone }}</p>
-        </div>
-
-        <div class="mail">
-            <p>Email : {{ user.mail }}</p>
-        </div>
-
-        <div class="campus">
-            <p>Campus : {{ user.campus.name }}</p>
-        </div>
-
-    </div>
-
-
-
-    {#  Bouton de retour à la page d'acceuil #}
-    <div class="btn_home">
-    <button><a href="{{ path('home') }}"> Retour</a></button>
-    </div>
-
-
-
-
-
+    <script>
+        src = "{{ asset('uploads/images/' ~ user.image.imageFilename|default('default_profile.png') ) }}"
+        document.getElementById('img-profile').src = src;
+    </script>
 {% endblock %}
+

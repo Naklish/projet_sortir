@@ -1,11 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheet %}
-    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/add.css') }}">
 {%  endblock%}
 {% block main %}
-    <h1>Ajoutez une nouvelle sortie !</h1>
+    <h2 class="text-center mt-4">Créer une sortie</h2>
     <br>
     <div class="col-sm-3 offset-sm-4">
         {% for message in app.flashes('success') %}
@@ -20,8 +19,8 @@
         {% endfor %}
     </div>
 
-    <div class="row form-outing">
-        <div class="col-sm-6">
+    <div class="row">
+        <div class="offset-md-1 col-md-5">
                 {{ form_start(outingForm) }}
                 {{ form_row(outingForm.name) }}
                 {{ form_row(outingForm.dateHourStart) }}
@@ -29,7 +28,7 @@
                 {{ form_row(outingForm.duration) }}
                 {{ form_row(outingForm.maxRegistration) }}
         </div>
-        <div class="col-sm-6">
+        <div class="col-md-5 right-form">
                 {{ form_row(outingForm.duration) }}
                 {{ form_row(outingForm.description) }}
                 {{ form_row(outingForm.campus) }}
@@ -37,10 +36,16 @@
                 {{ form_row(outingForm.locations) }}
         </div>
     </div>
-    <div id="buttons" class="input-group">
+    <div class="input-group row">
+        <div class="offset-sm-2 col-3">
         {{ form_row(outingForm.create) }}
+        </div>
+        <div class="col-3">
         {{ form_row(outingForm.publish) }}
-        <a class="btn btn-lg" id="btn-cancel" href="{{ path('home') }}">Annuler</a>
+        </div>
+        <div class="col-3">
+        <a class="btn btn-outline-primary" href="{{ path('home') }}">Annuler</a>
+        </div>
         {{ form_row(outingForm._token) }}
         {{ form_end(outingForm, {'render_rest': false}) }}
     </div>

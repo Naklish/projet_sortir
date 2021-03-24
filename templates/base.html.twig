@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Sortir{% endblock %}</title>
-    {% block stylesheet %}
+    {% block stylesheet %}{% endblock %}
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
               integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
               crossorigin="anonymous">
         <link rel="stylesheet" href="{{ asset('css/base.css') }}">
-    {% endblock %}
     {% block javascripts %}{% endblock %}
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@1,300&display=swap" rel="stylesheet">
 </head>
 <body>
 {% block nav %}
-    <nav class="navbar">
-        <p class="navbar-brand logo">Logo Sortir.com</p>
-        <div class="nav justify-content-end">
+    <nav class="navbar navbar-expand-sm">
+        <a class="navbar-brand logo" href="{{ path('home') }}">Sortir.com</a>
+        <div class="nav">
             <a class="nav-link" href="{{ path('home') }}">Accueil</a>
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                 <a class="nav-link" href="{{ path('user_myprofile') }}">Mon profil</a>

@@ -1,26 +1,29 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheet %}
-    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/cancelOuting.css') }}">
 {% endblock %}
 
 {% block title %}Modifier Sortie | {{ parent() }}{% endblock %}
 
 {% block main %}
-<h1>Annuler Sortie</h1>
-<br>
-    <main>
-        <div>
-            <p>Nom de la sortie : {{ outing.name }}</p>
-            <p>Date de la sortie : {{ outing.dateHourStart|date('d-m-Y') }}</p>
-            <p>Campus : {{ outing.campus.name }}</p>
-            <p>Lieu : {{ outing.locations.name }}</p>
+    <h1 class="text-center mt-4 mb-3">Annuler Sortie</h1>
+    <br>
+    <main class="row">
+        <div class="offset-md-4 col-md-4">
+            <p><strong>Nom de la sortie :</strong> {{ outing.name }}</p>
+            <p><strong>Date de la sortie :</strong> {{ outing.dateHourStart|date('d-m-Y') }}</p>
+            <p><strong>Campus :</strong> {{ outing.campus.name }}</p>
+            <p><strong>Lieu :</strong> {{ outing.locations.name }}</p>
             {{ form_start(outingCancelForm) }}
             {{ form_row(outingCancelForm.cancelMotive) }}
-            <div id="buttons" class="input-group">
-                {{ form_row(outingCancelForm.register) }}
-                <a href="{{ path('home') }}" id="btn-cancel" class="btn btn-lg">Annuler</a>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(outingCancelForm.register) }}
+                </div>
+                <div class="col-md-6 text-right">
+                    <a href="{{ path('home') }}" class="btn btn-outline-primary">Annuler</a>
+                </div>
             </div>
             {{ form_end(outingCancelForm) }}
         </div>

@@ -20,7 +20,7 @@ class OutingCancelFormType extends AbstractType
             ])
             ->add('register', SubmitType::class, [
                 'label' => 'Enregister',
-                'attr' => array('class' => 'btn btn-lg')
+                'attr' => array('class' => 'btn btn-outline-primary')
             ])
             ;
     }

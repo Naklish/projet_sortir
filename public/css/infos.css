@@ -1,0 +1,17 @@
+#img-profile {
+    width: 200px;
+    height: 200px;
+}
+
+.flex {
+    display: flex;
+    justify-content: end;
+}
+
+#label p {
+    font-weight: bold;
+}
+
+p {
+    padding-top: 10px;
+}

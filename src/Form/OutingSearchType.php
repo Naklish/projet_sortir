@@ -6,6 +6,7 @@ use App\Entity\Campus;
 use App\Entity\OutingSearch;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,7 +20,6 @@ class OutingSearchType extends AbstractType
             ->add('campus', EntityType::class, [
                 'required' => false,
                 'class' => Campus::class,
-                'mapped' => false,
                 'choice_label' => 'name',
                 'label' => 'Campus :',
                 'row_attr' => [
@@ -29,7 +29,7 @@ class OutingSearchType extends AbstractType
                     'class' => 'col-3 col-form-label'
                 ],
                 'attr' => [
-                    'class' => 'col-6 form-control'
+                    'class' => 'col-7 form-control'
                 ]
             ])
             ->add('searchBar', TextType::class, [
@@ -39,7 +39,7 @@ class OutingSearchType extends AbstractType
                     'class' => 'row'
                 ],
                 'label_attr' => [
-                    'class' => 'col-4 col-form-label'
+                    'class' => 'col-5 col-form-label'
                 ],
                 'attr' => [
                     'class' => 'col-5 form-control',
@@ -50,11 +50,39 @@ class OutingSearchType extends AbstractType
                 'widget' => 'single_text',
                 'required' => false,
                 'label' => 'Entre',
+                'label_attr' => [
+                    'class' => 'col-3 col-form-label'
+                ],
+                'attr' => [
+                    'class' => 'col-8 form-control'
+                ]
             ])
             ->add('maxDate', DateType::class, [
                 'widget' => 'single_text',
                 'required' => false,
-                'label' => 'et'
+                'label' => 'et',
+                'label_attr' => [
+                    'class' => 'col-2 col-form-label'
+                ],
+                'attr' => [
+                    'class' => 'col-8 form-control'
+                ]
+            ])
+            ->add('checkOrg', CheckboxType::class, [
+                'label' => 'Sorties dont je suis l\'organisateur/trice',
+                'required' => false,
+            ])
+            ->add('checkRegistered', CheckboxType::class, [
+                'label' => 'Sorties auxquelles je suis inscrit(e)',
+                'required' => false,
+            ])
+            ->add('checkNotRegistered', CheckboxType::class, [
+                'label' => 'Sorties auxquelles je ne suis pas inscrit(e)',
+                'required' => false,
+            ])
+            ->add('checkFinished', CheckboxType::class, [
+                'label' => 'Sorties passées',
+                'required' => false,
             ])
         ;
     }

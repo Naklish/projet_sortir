@@ -7,7 +7,18 @@
 
 .navbar
 {
-    background-color: blueviolet;
+    background-color: rgba(138, 43, 226, 0.7);
+    display: flex;
+    justify-content: space-between;
+    padding-right: 40px;
+}
+
+.navbar-brand {
+    font-family: 'Exo 2', sans-serif;
+    margin-left: 30px;
+    background: -webkit-linear-gradient(#cd9696, #eeeeee);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .nav-link
@@ -15,7 +26,16 @@
     color: papayawhip;
 }
 
-.array
-{
-    height: 100px;
+.user-info {
+    margin: 20px 30px 0 0;
+}
+
+.btn {
+    padding: 20px 40px 20px 40px;
+    border-radius: 0;
+    box-shadow: 5px 5px 5px #5eb5e0;
+}
+
+.btn-search {
+    padding: 30px 50px 30px 50px;
 }

@@ -1,18 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheet %}
-    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/myprofile.css') }}">
 {% endblock %}
+
 {% block title %}
-{{ parent() }} | Mon profil
+    {{ parent() }} | Mon profil
 {% endblock %}
 
 {% block main %}
-    <h3>Mon profil</h3>
+    <h3 class="mt-3 text-center">Mon profil</h3>
 
-    <div class="row justify-content-center">
-        <div class="col-sm-2">
+    <div class="row">
+        <div class="offset-1 col-md-2 col-sm-2">
             <br><br><br>
             <div class="row">
                 <img id="img-profile" src="">
@@ -26,33 +26,39 @@
                     </div>
                 {% endfor %}
                 {% for message in app.flashes('error') %}
-                    <div class="alert alert-info">
+                    <div class="alert alert-warning">
                         {{ message }}
                     </div>
                 {% endfor %}
 
             </div>
         </div>
-        <div class="col-sm-6    ">
+        <div class="offset-sm-1 col-md-6 col-sm-9">
             <br><br>
             <div class="form-profile">
-                {{ form_start(userForm)}}
-
-                {{ form_row(userForm.username, { label_attr: { class: ''}}) }}
-                {{ form_row(userForm.firstname) }}
-                {{ form_row(userForm.name) }}
-                {{ form_row(userForm.phone) }}
-                {{ form_row(userForm.mail) }}
-                {{ form_row(userForm.campus) }}
-                {{ form_row((userForm.photo)) }}
-                {{ form_row(userForm.password) }}
-                {# <br>
+                    {{ form_start(userForm) }}
+                    {{ form_row(userForm.username, { label_attr: { class: ''}}) }}
+                    {{ form_row(userForm.firstname) }}
+                    {{ form_row(userForm.name) }}
+                    {{ form_row(userForm.phone) }}
+                    {{ form_row(userForm.mail) }}
+                    {{ form_row(userForm.campus) }}
+                    {{ form_row((userForm.photo)) }}
+                    {{ form_row(userForm.password) }}
+                    {{ form_row(userForm.changePassword) }}
+                    {# <br>
                 <label for="uploader">Ma photo :</label>
                 <button class="btn" type="button" id="uploader">Télécharger ma photo vers le serveur</button>
                 <br><br>
-                #}
-                    <button class="btn btn-lg" type="submit">Enregistrer</button>
-                    <a class="btn btn-lg" href="{{ path('home') }}">Annuler</a>
+                    #}
+                <div class="row mb-5">
+                    <div class="offset-xl-2 col-xl-4 col-md-6 col-sm-12 mb-3">
+                        <button class="btn btn-outline-primary" type="submit">Enregistrer</button>
+                    </div>
+                    <div class="col-xl-6 col-md-6 col-sm-12">
+                        <a class="btn btn-outline-primary btn" href="{{ path('home') }}">Annuler</a>
+                    </div>
+                </div>
                 {{ form_end(userForm) }}
             </div>
         </div>
@@ -60,13 +66,12 @@
     <script>
         const labelFile = document.getElementById('label-input-file');
         const inputFile = document.getElementById('user_profile_form_photo');
-        inputFile.addEventListener('change',  (event) => {
+        inputFile.addEventListener('change', (event) => {
             const fileList = event.target.files;
             labelFile.innerHTML = "Photo : " + fileList[0].name;
         });
         src = "{{ asset('uploads/images/' ~ user.image.imageFilename|default('default_profile.png') ) }}"
         document.getElementById('img-profile').src = src;
-
     </script>
 {% endblock %}
 

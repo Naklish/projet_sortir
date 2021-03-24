@@ -12,11 +12,10 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntityValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Forms;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -54,8 +53,7 @@ class UserController extends AbstractController
      * @param ValidatorInterface $validator
      * @return Response
      */
-    public function modify(Request $request, EntityManagerInterface $em,
-                           UserPasswordEncoderInterface $encoder, ValidatorInterface $validator)
+    public function modify(Request $request, EntityManagerInterface $em, ValidatorInterface $validator, UserPasswordEncoderInterface $encoderService)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $user = $this->getUser();
@@ -68,9 +66,10 @@ class UserController extends AbstractController
 
         $password = $userForm->get("password")->getData();
 
+        $match = $encoderService->isPasswordValid($user, $password);
+
 
         if ($userForm->isValid() && $userForm->isSubmitted()) {
-
             $image = new Image();
             $imageFile = $userForm->get('photo')->getData();
 
@@ -86,8 +85,16 @@ class UserController extends AbstractController
                 $em->persist($image);
             }
 
-            $hashed = $encoder->encodePassword($user, $password);
-            $user->setPassword($hashed);
+            if ($match) {
+                if ($userForm->get('changePassword')->getData()) {
+                    $hashed = $encoderService->encodePassword($user, $userForm->get('changePassword')->getData());
+                    $user->setPassword($hashed);
+                }
+            } else {
+                $this->addFlash('error', 'Mot de passe incorrect.');
+                return $this->redirectToRoute('user_myprofile');
+            }
+
             $em->persist($user);
             try {
                 $em->flush();
@@ -104,7 +111,6 @@ class UserController extends AbstractController
                     'userForm' => $userForm->createView()
                 ]);
             }
-
         }
 
 
@@ -120,8 +126,10 @@ class UserController extends AbstractController
      * @Route ("/{id}", name="user_infos",
      *     requirements={"id": "\d+"}, methods={"GET"})
      */
-    public function infos($id, Request $request)
+    public function infos($id)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+
         $userRepo = $this->getDoctrine()->getRepository(User::class);
         $user = $userRepo->find($id);
 
@@ -143,12 +151,7 @@ class UserController extends AbstractController
 
         $currentOuting = $outingRepo->find($idOuting);
 
-        if ($currentUser->getId() == $currentOuting->getOUsers()->getId()) {
-            $this->addFlash('warning', 'Vous êtes l\'organisateur de cette sortie, vous êtes déjà inscrit.');
-            return $this->redirectToRoute('home');
-        }
-
-        if ($currentOuting->getDeadlineRegistration() < $today) {
+        if ($currentOuting->getState()->getId() != 2) {
             $this->addFlash('warning', 'Incription impossible : Les inscriptions sont cloturées.');
             return $this->redirectToRoute('home');
         }

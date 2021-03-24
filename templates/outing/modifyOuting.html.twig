@@ -1,11 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheet %}
-    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/add.css') }}">
-{%  endblock%}
+{% endblock %}
 {% block main %}
-    <h1>Modifier une sortie</h1>
+    <h2 class="text-center mt-4">Modifier une sortie</h2>
     <br>
     <div class="col-sm-3 offset-sm-4">
         {% for message in app.flashes('success') %}
@@ -20,8 +19,8 @@
         {% endfor %}
     </div>
 
-    <div class="row form-outing">
-        <div class="col-sm-6">
+    <div class="row">
+        <div class="offset-md-1 col-md-5">
             {{ form_start(outingForm) }}
 
             {{ form_row(outingForm.name) }}
@@ -30,7 +29,7 @@
             {{ form_row(outingForm.duration) }}
             {{ form_row(outingForm.maxRegistration) }}
         </div>
-        <div class="col-sm-6">
+        <div class="col-md-5 right-form">
             {{ form_row(outingForm.duration) }}
             {{ form_row(outingForm.description) }}
             {{ form_row(outingForm.campus) }}
@@ -38,15 +37,21 @@
             {{ form_row(outingForm.locations) }}
         </div>
     </div>
-    <div id="buttons" class="input-group">
-        {{ form_row(outingForm.modify) }}
-        {{ form_row(outingForm.publish) }}
-        {{ form_row(outingForm.remove) }}
-
-        <a class="btn btn-lg" id="btn-cancel" href="{{ path('home') }}">Annuler</a>
+    <div class="input-group row text-center">
+        <div class="offset-md-2 col-md-2 col-sm-6">
+            {{ form_row(outingForm.modify) }}
+        </div>
+        <div class="col-md-2 col-sm-6">
+            {{ form_row(outingForm.publish) }}
+        </div>
+        <div class="col-md-2 col-sm-6">
+            {{ form_row(outingForm.remove) }}
+        </div>
+        <div class="col-md-2 col-sm-6">
+            <a class="btn btn-outline-primary" href="{{ path('home') }}">Annuler</a>
+        </div>
         {{ form_row(outingForm._token) }}
         {{ form_end(outingForm, {'render_rest': false}) }}
-
     </div>
 
 
@@ -65,7 +70,7 @@
         });
 
         function getCity(id) {
-            fetch("http://localhost/projet_sortir/public/api/location/city/" + id , { method: "GET" })
+            fetch("http://localhost:8888/projet_sortir/public/api/location/city/" + id, {method: "GET"})
                 .then(response => response.json())
                 .then(response => {
                     const $selectLocation = document.querySelector('#outing_form_locations');

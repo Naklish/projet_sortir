@@ -39,10 +39,13 @@ function fillActionColumn(userId, orgId, stateId, outingId) {
 
     // Si l'utilisateur connecté est l'organisateur
     if (isOrg(userId, orgId)) {
-        if (stateId !== 1 && stateId !== 6) {
-            action.innerHTML = '<a href="' + urlOuting + "details/" + outingId + '">Afficher</a> - <a href="' + urlOuting + "cancel/" + outingId + '">Annuler</a>';
+        if (stateId !== 1 && stateId !== 6 && stateId !== 3) {
+            action.innerHTML = '<a href="' + urlOuting + "details/" + outingId + '">Afficher</a> - <a href="' + urlOuting + "cancel/" + outingId + '">Annuler</a> - <a href="' + urlUser + "register/" + outingId + '">S\'inscrire</a>';
         } else if (stateId === 1) {
             action.innerHTML = '<a href="' + urlOuting + "modify/" + outingId + '">Modifier</a> - <a href="' + urlOuting + "publish/" + outingId + '">Publier</a>';
+        }
+            if (isRegistered(userId, outingId)) {
+            action.innerHTML = '<a href="' + urlOuting + "details/" + outingId + '">Afficher</a> - <a href="' + urlOuting + "cancel/" + outingId + '">Annuler</a> - <a href="' + urlUser + "unregister/" + outingId + '">Se désister</a>';
         }
         // Si l'utilisateur connecté n'est pas l'organisateur
     } else {
@@ -94,26 +97,4 @@ function isRegistered(userId, outingId) {
     console.log(outingRegisteredUser)
     // Si l'id de l'utilisateur connecté se trouve dans le tableau outingRegisteredUser, on renvoie true
     return outingRegisteredUser.includes(userId);
-}
-
-
-/************************* TRAITEMENT FORMULAIRES *************************/
-let countCampus = 0;
-
-function campusForm(outId) {
-    arrayLine = document.getElementById("tab-line");
-    arrayLine.id = "tab-line" + countCampus;
-    const valueCampus = document.getElementById("campus").value;
-    // console.log("formulaire id : " + valueCampus);
-    // console.log("id sortie parcourue : " + outId);
-
-    if (valueCampus !== "") {
-        if (valueCampus != outId) {
-            arrayLine.remove();
-        } else {
-            // arrayLine.style.display = "block";
-            console.log("coucou");
-        }
-    }
-    countCampus++;
 }

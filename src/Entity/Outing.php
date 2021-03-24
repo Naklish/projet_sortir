@@ -87,7 +87,7 @@ class Outing
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $motive_cancel;
+    private $cancel_motive;
 
 
     public function __construct()
@@ -253,27 +253,19 @@ class Outing
     /**
      * @return mixed
      */
-    public function getMotiveCancel()
+    public function getCancelMotive()
     {
-        return $this->motive_cancel;
+        return $this->cancel_motive;
     }
-
-    /**
-     * @param mixed $motive_cancel
-     */
-    public function setMotiveCancel($motive_cancel): void
-    {
-        $this->motive_cancel = $motive_cancel;
-    }
-
-
 
     /**
      * @param mixed $cancel_motive
+     * @return Outing
      */
-    public function setCancelMotive($cancel_motive): void
+    public function setCancelMotive($cancel_motive)
     {
         $this->cancel_motive = $cancel_motive;
+        return $this;
     }
 
 

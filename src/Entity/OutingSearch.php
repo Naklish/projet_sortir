@@ -8,7 +8,7 @@ class OutingSearch {
 
 
     /**
-     * @var string|null
+     * @var Campus|null
      */
     private $campus;
 
@@ -27,19 +27,27 @@ class OutingSearch {
      */
     private $maxDate;
 
+    private $checkOrg;
+
+    private $checkRegistered;
+
+    private $checkNotRegistered;
+
+    private $checkFinished;
+
     /**
-     * @return string
+     * @return Campus|null
      */
-    public function getCampus(): ?string
+    public function getCampus(): ?Campus
     {
         return $this->campus;
     }
 
     /**
-     * @param string $campus
+     * @param Campus|null $campus
      * @return OutingSearch
      */
-    public function setCampus(string $campus): OutingSearch
+    public function setCampus(?Campus $campus): OutingSearch
     {
         $this->campus = $campus;
         return $this;
@@ -98,6 +106,79 @@ class OutingSearch {
         $this->maxDate = $maxDate;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCheckOrg()
+    {
+        return $this->checkOrg;
+    }
+
+    /**
+     * @param mixed $checkOrg
+     * @return OutingSearch
+     */
+    public function setCheckOrg($checkOrg)
+    {
+        $this->checkOrg = $checkOrg;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCheckRegistered()
+    {
+        return $this->checkRegistered;
+    }
+
+    /**
+     * @param mixed $checkRegistered
+     * @return OutingSearch
+     */
+    public function setCheckRegistered($checkRegistered)
+    {
+        $this->checkRegistered = $checkRegistered;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCheckNotRegistered()
+    {
+        return $this->checkNotRegistered;
+    }
+
+    /**
+     * @param mixed $checkNotRegistered
+     * @return OutingSearch
+     */
+    public function setCheckNotRegistered($checkNotRegistered)
+    {
+        $this->checkNotRegistered = $checkNotRegistered;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCheckFinished()
+    {
+        return $this->checkFinished;
+    }
+
+    /**
+     * @param mixed $checkFinished
+     * @return OutingSearch
+     */
+    public function setCheckFinished($checkFinished)
+    {
+        $this->checkFinished = $checkFinished;
+        return $this;
+    }
+
 
 
 }

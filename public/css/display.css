@@ -1,13 +1,7 @@
-.left{
-    float:left;
-    width: 60%;
+.canceled {
+    color: #ec5353;
 }
 
-.right{
-    overflow: auto;
+.username {
+    width: 30%;
 }
-
-.users{
-    float: left;
-}
-

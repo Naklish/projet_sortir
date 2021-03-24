@@ -68,6 +68,8 @@ class User implements UserInterface, EquatableInterface
      */
     private $roles = [];
 
+    private $salt;
+
 
     //RELATION ENTRE USER/CAMPUS
     /**
@@ -231,7 +233,7 @@ class User implements UserInterface, EquatableInterface
      */
     public function getSalt()
     {
-        return null;
+        return $this->salt;
     }
 
     /**

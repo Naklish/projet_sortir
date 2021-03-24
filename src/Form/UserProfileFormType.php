@@ -61,13 +61,20 @@ class UserProfileFormType extends AbstractType
                 'choice_label' => 'name',
                 'constraints' => new NotBlank(),
             ])
-            ->add('password', RepeatedType::class, [
+            ->add('password', PasswordType::class, [
                 'constraints' => new NotBlank(),
+                'mapped' => false,
+                'attr' => ['class' => 'password-field'],
+                'required' => true,
+                'label' => 'Mot de passe : '
+    ])
+            ->add('changePassword', RepeatedType::class, [
+                'required' => false,
+                'mapped' => false,
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les champs des mots de passe doivent correspondre',
                 'options' => ['attr' => ['class' => 'password-field']],
-                'required' => true,
-                'first_options'  => ['label' => 'Mot de passe :'],
+                'first_options'  => ['label' => 'Modifier mot de passe :'],
                 'second_options' => ['label' => 'Confirmation :']
             ])
             ->add('photo', FileType::class, [

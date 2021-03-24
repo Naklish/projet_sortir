@@ -62,12 +62,12 @@ class OutingFormType extends AbstractType
                 'label' => 'Lieu :'
             ])
             ->add('create', SubmitType::class, [
-                'label' => 'Créer',
-                'attr' => array('class' => 'btn btn-lg')
+                'label' => 'Enregistrer',
+                'attr' => array('class' => 'btn btn-outline-primary')
             ])
             ->add('publish', SubmitType::class, [
                 'label' => 'Publier',
-                'attr' => array('class' => 'btn btn-lg')
+                'attr' => array('class' => 'btn btn-outline-primary')
             ])
 
             ->add('rue', TextType::class, [
@@ -91,11 +91,11 @@ class OutingFormType extends AbstractType
             ])
             ->add('remove', SubmitType::class, [
                 'label' => 'Supprimer',
-                'attr' => array('class' => 'btn btn-lg')
+                'attr' => array('class' => 'btn btn-outline-primary')
             ])
             ->add('modify', SubmitType::class, [
-                'label' => 'modifier',
-                'attr' => array('class' => 'btn btn-lg')
+                'label' => 'Modifier',
+                'attr' => array('class' => 'btn btn-outline-primary')
             ])
             ->add('cancelMotive', TextareaType::class, [
                 'label' => 'Motif :',
@@ -103,7 +103,7 @@ class OutingFormType extends AbstractType
             ])
             ->add('register', SubmitType::class, [
                 'label' => 'Enregister',
-                'attr' => array('class' => 'btn btn-lg')
+                'attr' => array('class' => 'btn btn-outline-primary')
             ])
 
             // il faut rajouter l'option : 'mapped' => false,

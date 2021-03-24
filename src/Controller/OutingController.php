@@ -31,6 +31,7 @@ class OutingController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $currentUser = $this->getUser();
         $userId = $currentUser->getId();
+        $outingSearch->setCampus($currentUser->getCampus());
 
         $outingSearchForm = $this->createForm(OutingSearchType::class, $outingSearch);
         $outingSearchForm->handleRequest($request);
@@ -71,6 +72,7 @@ class OutingController extends AbstractController
      */
     public function add(EntityManagerInterface $em)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $outing = new Outing();
         $outingForm = $this->createForm(OutingFormType::class, $outing);
 
@@ -84,6 +86,7 @@ class OutingController extends AbstractController
      */
     public function createOuting(Request $request, EntityManagerInterface $em)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $stateRepo = $this->getDoctrine()->getRepository(State::class);
 
         $user = $this->getUser();
@@ -155,7 +158,7 @@ class OutingController extends AbstractController
             return $this->redirectToRoute('home');
         }
         $outingForm = $this->createForm(OutingFormType::class, $outing, array(
-            'action' => 'http://localhost/projet_sortir/public/outing/modify/' . $idOuting
+            'action' => 'http://localhost:8888/projet_sortir/public/outing/modify/' . $idOuting
         ));
 
         $outingForm->handleRequest($request);
@@ -220,13 +223,20 @@ class OutingController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $outing = $outingRepo->find($idOuting);
 
+        $currentUser = $this->getUser()->getId();
+        if($currentUser != $outing->getOUsers()->getId()) {
+            $this->addFlash('warning', 'Vous n\'êtes pas l\'organisateur de cette sortie !');
+            return $this->redirectToRoute('home');
+        }
+
+
         if($outing->getState()->getId() != 2){
             $this->addFlash('warning', 'Vous ne pouvez pas annuler cette sortie');
             return $this->redirectToRoute('home');
         }
 
         $outingCancelForm = $this->createForm(OutingCancelFormType::class, $outing, array(
-            'action' => 'http://localhost/projet_sortir/public/outing/cancel/' . $idOuting
+            'action' => 'http://localhost:8888/projet_sortir/public/outing/cancel/' . $idOuting
         ));
 
         $outingCancelForm->handleRequest($request);
@@ -259,6 +269,7 @@ class OutingController extends AbstractController
      */
     public function display($id)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $outingRepo = $this->getDoctrine()->getRepository(Outing::class);
         $outing = $outingRepo->find($id);
 
