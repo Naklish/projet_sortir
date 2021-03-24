@@ -6,22 +6,25 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(fields={"username", "mail"}, errorPath="username", message="Le pseudo ou le mail sont déjà utilisé")
  */
-class User implements UserInterface
+class User implements UserInterface, EquatableInterface
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="id", type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50, unique=true)
+     * @ORM\Column(name="username", type="string", length=50, unique=true)
      */
     private $username;
 
@@ -308,4 +311,8 @@ class User implements UserInterface
         $this->outings->add($outing);
     }
 
+    public function isEqualTo(UserInterface $user): bool
+    {
+        return true;
+    }
 }

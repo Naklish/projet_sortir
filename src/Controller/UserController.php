@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Form\UserProfileFormType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntityValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -17,6 +18,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Validator\Constraints\Valid;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
 /**
@@ -45,14 +48,20 @@ class UserController extends AbstractController
 
     /**
      * @Route("/myprofile", name="user_myprofile_modify", methods={"POST"})
-     * @throws UniqueConstraintViolationException
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param UserPasswordEncoderInterface $encoder
+     * @param ValidatorInterface $validator
+     * @return Response
      */
     public function modify(Request $request, EntityManagerInterface $em,
-                           UserPasswordEncoderInterface $encoder)
+                           UserPasswordEncoderInterface $encoder, ValidatorInterface $validator)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+        $user = $this->getUser();
+
         $userRepo = $this->getDoctrine()->getRepository(User::class);
-        $user = $userRepo->find($this->getUser());
+        $user = $userRepo->find($user->getId());
 
         $userForm = $this->createForm(UserProfileFormType::class, $user);
         $userForm->handleRequest($request);
