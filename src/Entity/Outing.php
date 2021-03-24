@@ -221,7 +221,7 @@ class Outing
     /**
      * @return mixed
      */
-    public function getRegisteredUser(): Collection
+    public function getRegisteredUser()
     {
         return $this->registered_user;
     }
@@ -253,10 +253,20 @@ class Outing
     /**
      * @return mixed
      */
-    public function getCancelMotive()
+    public function getMotiveCancel()
     {
-        return $this->cancel_motive;
+        return $this->motive_cancel;
     }
+
+    /**
+     * @param mixed $motive_cancel
+     */
+    public function setMotiveCancel($motive_cancel): void
+    {
+        $this->motive_cancel = $motive_cancel;
+    }
+
+
 
     /**
      * @param mixed $cancel_motive
@@ -302,6 +312,10 @@ class Outing
                 $state = $stateRepo->find(4);
                 $this->setState($state);
             }
+            if(count($this->getRegisteredUser()) == $this->getMaxRegistration()){
+                $state = $stateRepo->find(3);
+                $this->setState($state);
+            };
         }
         if ($this->getState()->getId() == 4)
         {
